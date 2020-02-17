@@ -57,7 +57,8 @@ Hay un conjunto de reglas a tener en cuenta:
 * Elimine las ramas locales y remotas después de reitegrar el codigo en la otra rama.
     
   _Por que?:_
-    > It will clutter up your list of branches with dead branches. It ensures you only ever merge the branch back into (`master` or `develop`) once. Feature branches should only exist while the work is still in progress.
+    > Asegura que solo vuelva a fusionar la rama (`master` o` develop`) una vez. Las ramas de características solo deberían existir mientras el trabajo todavía está en progreso, en caso de no borrarlas sera inmanejable la cantidad de ramas que tendra en GIT.
+
 
 * Antes de realizar un Pull Request, asegúrese de que la rama de feature compila correctamente y pasa todas las pruebas (incluidas las comprobaciones de estilo de código)
     
@@ -67,17 +68,19 @@ Hay un conjunto de reglas a tener en cuenta:
 * Use [este](./.gitignore) `.gitignore` archivo.
     
   _Por que?:_
-    > It already has a list of system files that should not be sent with your code into a remote repository. In addition, it excludes setting folders and files for most used editors, as well as most common dependency folders.
     > Ya tiene una lista de archivos del sistema que no deben enviarse con su código a un repositorio remoto. Además, puede excluir la configuración de carpetas y archivos para los editores más utilizados, así como las carpetas de dependencia más comunes. Existe paginas que permite auto-generar este archivo, un ejemplo es [gitignore.io](https://www.gitignore.io)
 
 * Proteja su `develop` y `master` branch.
   
   _Por que?:_
     > It protects your production-ready branches from receiving unexpected and irreversible changes. read more... [Github](https://help.github.com/articles/about-protected-branches/), [Bitbucket](https://confluence.atlassian.com/bitbucketserver/using-branch-permissions-776639807.html) and [GitLab](https://docs.gitlab.com/ee/user/project/protected_branches.html)
+    > En caso de utilizar ramas de `release`, proteja las msimas de recibir cambios inesperados e irreversibles. Leer más ... [Github] (https://help.github.com/articles/about-protected-branches/), [Bitbucket] (https://confluence.atlassian.com/bitbucketserver/using-branch-permissions -776639807.html) y [GitLab] (https://docs.gitlab.com/ee/user/project/protected_branches.html)
 
 <a name="git-workflow"></a>
 ### 1.2 Git workflow
-Because of most of the reasons above, we use [Feature-branch-workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow) with [Interactive Rebasing](https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing) and some elements of [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow) (naming and having a develop branch). The main steps are as follows:
+
+Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workflow] (https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow) con [Interactive Rebasing] (https: //www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing) y algunos elementos de [Gitflow] (https://www.atlassian.com/git/tutorials/comparating-workflows#gitflow-workflow). Los pasos principales son los siguientes:
+
 
 * For a new project, initialize a git repository in the project directory. __For subsequent features/changes this step should be ignored__.
    ```sh
@@ -95,33 +98,32 @@ Because of most of the reasons above, we use [Feature-branch-workflow](https://w
     git commit
     ```
   _Por que?:_
-    > `git add <file1> <file2> ... ` - you should add only files that make up a small and coherent change.
+    > `git add <file1> <file2> ... ` - solo debe agregar archivos que constituyan un cambio pequeño y coherente.
     
-    > `git commit` will start an editor which lets you separate the subject from the body. 
-    
-    > Lea más sobre esto en la *sección 1.3*.
+    > `git commit`  iniciará un editor que le permite separar el tema del cuerpo
     
     _Tip:_
-    > You could use `git add -p` instead, which will give you chance to review all of the introduced changes one by one, and decide whether to include them in the commit or not.
+    > En su lugar, puede usar `git add -p`, que le dará la oportunidad de revisar todos los cambios introducidos uno por uno, y decidir si incluirlos en el commit o no.
 
-* Sync with remote to get changes you’ve missed.
+* Actualiza tu rama con los cambios que han hecho en la rama superior 
+
     ```sh
     git checkout develop
     git pull
     ```
     
-  _Por que?:_
-    > This will give you a chance to deal with conflicts on your machine while rebasing (later) rather than creating a Pull Request that contains conflicts.
-    
-* Update your feature branch with latest changes from develop by interactive rebase.
+  _Por que?:_    
+    > Esto le dará la oportunidad de lidiar con conflictos en tu máquina y no en el rebasing (más adelante) en lugar de crear un Pull Request que contenga conflictos.
+
+* Actualice su rama de `feature` con los últimos cambios desde el desarrollo mediante rebase interactivo.
     ```sh
     git checkout <branchname>
     git rebase -i --autosquash develop
     ```
     
   _Por que?:_
-    > You can use --autosquash to squash all your commits to a single commit. Nobody wants many commits for a single feature in develop branch. [read more...](https://robots.thoughtbot.com/autosquashing-git-commits)
-    
+    > Puede usar --autosquash para realizar una sola confirmación. . [read more...](https://robots.thoughtbot.com/autosquashing-git-commits)
+      
 * If you don’t have conflicts, skip this step. If you have conflicts, [resolve them](https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/)  and continue rebase.
     ```sh
     git add <file1> <file2> ...
@@ -754,3 +756,16 @@ For each endpoint explain:
 
 
 * Use herramientas de diseño de API. Hay muchas herramientas de código abierto para una buena documentación, como [API Blueprint](https://apiblueprint.org/) y [Swagger](https://swagger.io/).
+
+---
+Sources:
+[elsewhencode/project-guidelines](https://github.com/elsewhencode/project-guidelines),
+[RisingStack Engineering](https://blog.risingstack.com/),
+[Mozilla Developer Network](https://developer.mozilla.org/),
+[Heroku Dev Center](https://devcenter.heroku.com),
+[Airbnb/javascript](https://github.com/airbnb/javascript),
+[Atlassian Git tutorials](https://www.atlassian.com/git/tutorials),
+[Apigee](https://apigee.com/about/blog),
+[Wishtack](https://blog.wishtack.com)
+
+Icons by [icons8](https://icons8.com/)
