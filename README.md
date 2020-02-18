@@ -664,101 +664,97 @@ _Por que?:_
 * use camelCase para los parámetros de la QueryString o en los campos de recursos.
 * use plural kebab-case para nombres de recursos en URL.
 
-* Always use a plural nouns for naming a url pointing to a collection: `/users`.
+* Utilice siempre un nombre plural para nombrar una url que apunta a una colección: `/users`.
 
   _Por que?:_
-    > Basically, it reads better and keeps URLs consistent. [read more...](https://apigee.com/about/blog/technology/restful-api-design-plural-nouns-and-concrete-names)
+    > Básicamente, se lee mejor y mantiene las URL consistentes. [Lee mas...](https://apigee.com/about/blog/technology/restful-api-design-plural-nouns-and-concrete-names)
 
-* In the source code convert plurals to variables and properties with a List suffix.
 
-    _Why_:
-    > Plural is nice in the URL but in the source code, it’s just too subtle and error-prone.
-
-* Always use a singular concept that starts with a collection and ends to an identifier:
+* Siempre use un concepto singular que comience con una colección y termine con un identificador:
 
     ```
     /students/245743
     /airports/kjfk
     ```
-* Avoid URLs like this: 
+* Evite URL como esta:
     ```
     GET /blogs/:blogId/posts/:postId/summary
     ```
 
   _Por que?:_
-    > This is not pointing to a resource but to a property instead. You can pass the property as a parameter to trim your response.
+    > Esto no apunta a un recurso sino a una propiedad en su lugar. Puede pasar la propiedad como parámetro para recortar su respuesta
 
-* Keep verbs out of your resource URLs.
+* Mantenga los verbos fuera de las URL de sus recursos.
 
   _Por que?:_
-    > Because if you use a verb for each resource operation you soon will have a huge list of URLs and no consistent pattern which makes it difficult for developers to learn. Plus we use verbs for something else.
+    > Porque si usa un verbo para cada operación de recursos, pronto tendrá una gran lista de URL y ningún patrón consistente que dificulte el aprendizaje de los desarrolladores. Además, usamos verbos para otra cosa.
 
-* Use verbs for non-resources. In this case, your API doesn't return any resources. Instead, you execute an operation and return the result. These **are not** CRUD (create, retrieve, update, and delete) operations:
+* Use verbos para non-resources. En este caso, su API no devuelve ningún recurso. En su lugar, ejecuta una operación y devuelve el resultado. Estas **no son** operaciones CRUD (crear, recuperar, actualizar y eliminar)
 
     ```
     /translate?text=Hallo
     ```
 
   _Por que?:_
-    > Because for CRUD we use HTTP methods on `resource` or `collection` URLs. The verbs we were talking about are actually `Controllers`. You usually don't develop many of these. [read more...](https://byrondover.github.io/post/restful-api-guidelines/#controller)
+    > Porque para CRUD usamos métodos HTTP en URL de `resource` o` collection`. Los verbos de los que estábamos hablando son en realidad `Controllers`. Usualmente no desarrollas muchos de estos. [Lee mas...](https://byrondover.github.io/post/restful-api-guidelines/#controller)
+ 
 
-* The request body or response type is JSON then please follow `camelCase` for `JSON` property names to maintain the consistency.
-    
+
+* El cuerpo de la solicitud o el tipo de respuesta es JSON, entonces siga `camelCase` para los nombres de propiedad` JSON` para mantener la coherencia.
   _Por que?:_
-    > This is a JavaScript project guideline, where the programming language for generating and parsing JSON is assumed to be JavaScript.
+    > Se use que muchas de las integraciones que tenemos son en JavaScript, donde se supone que el lenguaje de programación para generar y analizar JSON.
 
-* Even though a resource is a singular concept that is similar to an object instance or database record, you should not use your `table_name` for a resource name and `column_name` resource property.
+* Aunque un recurso es un concepto singular que es similar a una instancia de objeto o registro de base de datos, no debe usar su `table_name` para un nombre de recurso y una propiedad de recurso` column_name`.
+  _Por que?:_
+    > Debido a que su intención es exponer Recursos, no los detalles de su esquema de base de datos. La idea es no generar un hueco de seguridad, mientras menos informacion exista de nuestro esquema real mucho mejor.
+
+* Nuevamente, solo use sustantivos en su URL cuando nombre sus recursos y no intente explicar su funcionalidad.
 
   _Por que?:_
-    > Because your intention is to expose Resources, not your database schema details.
+    > Solo use sustantivos en sus URL de recursos, evite puntos finales como `/addNewUser` o` /updateUser`. También evite enviar operaciones de recursos como parámetro.
 
-* Again, only use nouns in your URL when naming your resources and don’t try to explain their functionality.
+* Implemente las funcionalidades CRUD utilizando métodos HTTP:
 
-  _Por que?:_
-    > Only use nouns in your resource URLs, avoid endpoints like `/addNewUser` or `/updateUser` .  Also avoid sending resource operations as a parameter.
+    _Como?:_
+    > `GET`: Para obtener un resources.
 
-* Explain the CRUD functionalities using HTTP methods:
-
-    _How:_
-    > `GET`: To retrieve a representation of a resource.
-    
-    > `POST`: To create new resources and sub-resources.
+    > `POST`: Para crear un nuevo resources o sub-resources.
    
-    > `PUT`: To update existing resources.
+    > `PUT`: Para actualizar un resources.
     
-    > `PATCH`: To update existing resources. It only updates the fields that were supplied, leaving the others alone.
+    > `PATCH`: Para actualizar un resources. Solo se actualiza los campos que se envian, el resto se ignoran. 
     
-    > `DELETE`:	To delete existing resources.
+    > `DELETE`:	Para borrar un resources.
 
 
-* For nested resources, use the relation between them in the URL. For instance, using `id` to relate an employee to a company.
+* Para recursos anidados, use la relación entre ellos en la URL. Por ejemplo, usar 'id' para relacionar a un empleado con una empresa.
 
   _Por que?:_
-    > This is a natural way to make resources explorable.
+    > Esta es una forma natural de hacer que los recursos sean explorables.
 
-    _How:_
+    _Como?:_
 
-    > `GET      /schools/2/students	` , should get the list of all students from school 2.
+    > `GET      /schools/2/students	` , debe obtener la lista de todos los estudiantes de la escuela 2.
 
-    > `GET      /schools/2/students/31`	, should get the details of student 31, which belongs to school 2.
+    > `GET      /schools/2/students/31`	, debe obtener los detalles del estudiante 31, que pertenece a la escuela 2.
 
-    > `DELETE   /schools/2/students/31`	, should delete student 31, which belongs to school 2.
+    > `DELETE   /schools/2/students/31`	, debe eliminar el estudiante 31, que pertenece a la escuela 2.
 
-    > `PUT      /schools/2/students/31`	, should update info of student 31, Use PUT on resource-URL only, not collection.
+    > `PUT      /schools/2/students/31`	, debe actualizar la información del estudiante 31, usar PUT solo en la URL del recurso, no en el resource.
 
-    > `POST     /schools` , should create a new school and return the details of the new school created. Use POST on collection-URLs.
+    > `POST     /schools` , debe crear una nueva escuela y devolver los detalles de la nueva escuela creada. Utilice POST en URL de colección.
 
-* Use a simple ordinal number for a version with a `v` prefix (v1, v2). Move it all the way to the left in the URL so that it has the highest scope:
+* Use un número ordinal simple para una versión con un prefijo `v` (v1, v2). Muévalo completamente hacia la izquierda en la URL para que tenga el alcance más alto:
+
     ```
     http://api.domain.com/v1/schools/3/students	
     ```
 
   _Por que?:_
-    > When your APIs are public for other third parties, upgrading the APIs with some breaking change would also lead to breaking the existing products or services using your APIs. Using versions in your URL can prevent that from happening. [read more...](https://apigee.com/about/blog/technology/restful-api-design-tips-versioning)
+    > Cuando sus API son públicas para otros terceros, la actualización de las API con algunos cambios importantes también conduciría a la ruptura de los productos o servicios existentes que utilizan sus API. El uso de versiones en su URL puede evitar que eso suceda. [Lee mas...](https://apigee.com/about/blog/technology/restful-api-design-tips-versioning)
 
 
-
-* Response messages must be self-descriptive. A good error message response might look something like this:
+* Los mensajes de respuesta deben ser autodescriptivos. Una buena respuesta de mensaje de error podría verse así:
     ```json
     {
         "code": 1234,
@@ -766,7 +762,7 @@ _Por que?:_
         "description" : "More details"
     }
     ```
-    or for validation errors:
+    o para errores de validación:
     ```json
     {
         "code" : 2314,
@@ -787,13 +783,12 @@ _Por que?:_
     ```
 
   _Por que?:_
-    > developers depend on well-designed errors at the critical times when they are troubleshooting and resolving issues after the applications they've built using your APIs are in the hands of their users.
+    > los desarrolladores dependen de errores bien diseñados en los momentos críticos cuando están solucionando problemas y resolviendo problemas después de que las aplicaciones que han creado utilizando sus API están en manos de sus usuarios.
 
 
-    _Note: Keep security exception messages as generic as possible. For instance, Instead of saying ‘incorrect password’, you can reply back saying ‘invalid username or password’ so that we don’t unknowingly inform user that username was indeed correct and only the password was incorrect._
+    _Nota: Mantenga los mensajes de excepción de seguridad tan genéricos como sea posible. Por ejemplo, en lugar de decir "contraseña incorrecta", puede responder de nuevo diciendo "nombre de usuario o contraseña no válidos" para que no informemos al usuario sin saberlo que el nombre de usuario era correcto y solo la contraseña era incorrecta._
 
-* Use these status codes to send with your response to describe whether **everything worked**,
-The **client app did something wrong** or The **API did something wrong**.
+* Use estos códigos de estado (http codes) para enviar con su respuesta para describir si **todo funcionó**,La **aplicación cliente hizo algo mal** o La **API hizo algo mal**.
     
     _Which ones:_
     > `200 OK` response represents success for `GET`, `PUT` or `POST` requests.
