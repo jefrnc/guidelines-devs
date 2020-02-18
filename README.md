@@ -25,7 +25,6 @@ Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas
     - [Diseño delAPI](#api-design)
     - [Seguridad de la API](#api-security)
     - [Documentación de la API](#api-documentation)
-- [Licencia](#licensing)
 
 <a name="git"></a>
 ## 1. Git
@@ -77,22 +76,13 @@ Hay un conjunto de reglas a tener en cuenta:
     > En caso de utilizar ramas de `release`, proteja las msimas de recibir cambios inesperados e irreversibles. Leer más ... [Github] (https://help.github.com/articles/about-protected-branches/), [Bitbucket] (https://confluence.atlassian.com/bitbucketserver/using-branch-permissions -776639807.html) y [GitLab] (https://docs.gitlab.com/ee/user/project/protected_branches.html)
 
 <a name="git-workflow"></a>
-### 1.2 Git workflow
+### 1.2 GitFlow
 
-Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workflow] (https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow) con [Interactive Rebasing] (https: //www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing) y algunos elementos de [Gitflow] (https://www.atlassian.com/git/tutorials/comparating-workflows#gitflow-workflow). Los pasos principales son los siguientes:
+Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workflow] (https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow) con [Interactive Rebasing] (https: //www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing) y algunos elementos de [Gitflow] (https://www.atlassian.com/git/tutorials/comparating-workflows#gitflow-workflow).  
 
-
-* For a new project, initialize a git repository in the project directory. __For subsequent features/changes this step should be ignored__.
-   ```sh
-   cd <project directory>
-   git init
-   ```
-
-* Checkout a new feature/bug-fix branch.
-    ```sh
-    git checkout -b <branchname>
-    ```
-* Make Changes.
+***TBD:: TODO // FALTA AGREGAR EL RESTO DE GITFLOW***
+ 
+* Comitear un cambio.
     ```sh
     git add <file1> <file2> ...
     git commit
@@ -124,28 +114,31 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
   _Por que?:_
     > Puede usar --autosquash para realizar una sola confirmación. . [read more...](https://robots.thoughtbot.com/autosquashing-git-commits)
       
-* If you don’t have conflicts, skip this step. If you have conflicts, [resolve them](https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/)  and continue rebase.
+* Si no tiene conflictos, omita este paso. Si tiene conflictos, [resuélvalos](https://help.github.com/articles/resolving-a-merge-conflict-using-the-command-line/) y continúe rebase.
+
     ```sh
     git add <file1> <file2> ...
     git rebase --continue
     ```
-* Push your branch. Rebase will change history, so you'll have to use `-f` to force changes into the remote branch. If someone else is working on your branch, use the less destructive `--force-with-lease`.
+
+* Push tu rama. Rebase cambiará el historial, por lo que tendrá que usar '-f' para forzar los cambios en la rama remota. Si alguien más está trabajando en su rama, use el menos destructivo `--force-with-lease`.
+
     ```sh
     git push -f
     ```
     
   _Por que?:_
-    > When you do a rebase, you are changing the history on your feature branch. As a result, Git will reject normal `git push`. Instead, you'll need to use the -f or --force flag. [read more...](https://developer.atlassian.com/blog/2015/04/force-with-lease/)
+    > Cuando hace un rebase, está cambiando el historial en su rama de características. Como resultado, Git rechazará el `git push` normal. En su lugar, deberá usar el indicador -f o --force. [leer más ...](https://developer.atlassian.com/blog/2015/04/force-with-lease/)
     
-    
-* Make a Pull Request.
-* Pull request will be accepted, merged and close by a reviewer.
-* Remove your local feature branch if you're done.
+* Genere un Pull Request.
+* El Pull Request aceptada, fusionada y cerrada por un aprovador (reviewer).
+* Elimine su rama de `feature` local si ha terminado.
 
   ```sh
   git branch -d <branchname>
   ```
-  to remove all branches which are no longer on remote
+  para eliminar todas las ramas que ya no están en el repositorio remoto
+
   ```sh
   git fetch -p && for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do git branch -D $branch; done
   ```
@@ -153,94 +146,89 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
 <a name="writing-good-commit-messages"></a>
 ### 1.3 Escribir mensajes descriptivos en el commit
 
-Having a good guideline for creating commits and sticking to it makes working with Git and collaborating with others a lot easier. Here are some rules of thumb ([source](https://chris.beams.io/posts/git-commit/#seven-rules)):
+Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y colaborar con otros sea mucho más fácil. Aquí hay algunas reglas generales ([fuente](https://chris.beams.io/posts/git-commit/#seven-rules)):
 
- * Separate the subject from the body with a newline between the two.
+ * Separe el sujeto del cuerpo con una nueva línea entre los dos.
 
   _Por que?:_
-    > Git is smart enough to distinguish the first line of your commit message as your summary. In fact, if you try git shortlog, instead of git log, you will see a long list of commit messages, consisting of the id of the commit, and the summary only.
+    > Git es lo suficientemente inteligente como para distinguir la primera línea de su mensaje de confirmación como su resumen. De hecho, si prueba git shortlog, en lugar de git log, verá una larga lista de mensajes de confirmación, que consta de la identificación de la confirmación y solo el resumen.
 
  * Limite la línea de asunto a 50 caracteres y ajuste el cuerpo a 72 caracteres.
 
-    _why_
-    > Commits should be as fine-grained and focused as possible, it is not the place to be verbose. [read more...](https://medium.com/@preslavrachev/what-s-with-the-50-72-rule-8a906f61f09c)
+  _Por que?:_
+    > Los commits deben ser lo más precisos y enfocados posible, no es el lugar para ser detallado. [Lee mas...](https://medium.com/@preslavrachev/what-s-with-the-50-72-rule-8a906f61f09c)
 
- * Capitalize the subject line.
- * Do not end the subject line with a period.
- * Use [imperative mood](https://en.wikipedia.org/wiki/Imperative_mood) in the subject line.
+ * Capitalizar la línea de asunto.
+ * No termine la línea de asunto con un punto.
+ * Use modo [imperativo](https://en.wikipedia.org/wiki/Imperative_mood) en la línea de asunto.
 
   _Por que?:_
-    > Rather than writing messages that say what a committer has done. It's better to consider these messages as the instructions for what is going to be done after the commit is applied on the repository. [read more...](https://news.ycombinator.com/item?id=2079612)
+    > En lugar de escribir mensajes que digan lo que ha hecho, es mejor considerar estos mensajes como las instrucciones de lo que se hará después de que se aplique la confirmación en el repositorio. Osea el valor o funcionalidad que aporta nuestro aporte en el repositorio.  
 
 
- * Use the body to explain **what** and **why** as opposed to **how**.
+* Use el cuerpo para explicar **qué** y **por qué** en lugar de **cómo**.
 
  <a name="documentation"></a>
-## 2. Documentation
+## 2. Documentacion
 
 ![Documentation](/images/documentation.png)
 
-* Use this [template](./README.sample.md) for `README.md`, Feel free to add uncovered sections.
-* For projects with more than one repository, provide links to them in their respective `README.md` files.
-* Keep `README.md` updated as a project evolves.
-* Comment your code. Try to make it as clear as possible what you are intending with each major section.
-* If there is an open discussion on github or stackoverflow about the code or approach you're using, include the link in your comment. 
-* Don't use comments as an excuse for a bad code. Keep your code clean.
-* Don't use clean code as an excuse to not comment at all.
-* Keep comments relevant as your code evolves.
+* Use esta [plantilla] (./README.sample.md) para `README.md`, siéntase libre de agregar secciones.
+* Para proyectos con más de un repositorio, proporcione enlaces a ellos en sus respectivos archivos `README.md`.
+* Mantenga `README.md` actualizado a medida que evoluciona un proyecto.
+* Comenta tu código. Trate de dejar lo más claro posible lo que pretende con cada sección principal.
+* Si hay una discusión abierta sobre github o stackoverflow sobre el código o enfoque que está utilizando, incluya el enlace en su comentario.
+* No utilice comentarios como excusa para un código incorrecto. Mantén tu código limpio.
+* Mantenga los comentarios relevantes a medida que evoluciona su código.
 
 <a name="environments"></a>
 ## 3. Ambientes/Environments
 
 ![Environments](/images/laptop.png)
 
-* Define separate `development`, `test` and `production` environments if needed.
+* Defina entornos separados de `desarrollo`,` prueba` y `producción` si es necesario.
 
   _Por que?:_
-    > Different data, tokens, APIs, ports etc... might be needed in different environments. You may want an isolated `development` mode that calls fake API which returns predictable data, making both automated and manual testing much easier. Or you may want to enable Google Analytics only on `production` and so on. [read more...](https://stackoverflow.com/questions/8332333/node-js-setting-up-environment-specific-configs-to-be-used-with-everyauth)
+    > Es posible que se necesiten diferentes datos, tokens, API, puertos, etc en diferentes entornos. Es posible que desee un modo de "desarrollo" aislado que llame a una API falsa que devuelva datos predecibles, lo que facilita mucho las pruebas automáticas y manuales. O puede que desee habilitar Google Analytics solo en `producción` y así sucesivamente. [Lee mas...](https://stackoverflow.com/questions/8332333/node-js-setting-up-environment-specific-configs-to-be-used-with-everyauth)
 
 
-* Load your deployment specific configurations from environment variables and never add them to the codebase as constants, [look at this sample](./config.sample.js).
+* Cargue sus configuraciones específicas de implementación desde variables de entorno y nunca las agregue a la base de código como constantes.
 
   _Por que?:_
-    > You have tokens, passwords and other valuable information in there. Your config should be correctly separated from the app internals as if the codebase could be made public at any moment.
+    > Tiene tokens, contraseñas y otra información valiosa allí. Su configuración debe estar correctamente separada de las partes internas de la aplicación como si la base de código pudiera hacerse pública en cualquier momento.
 
-    _How:_
+    _Como?:_
     >
-    `.env` files to store your variables and add them to `.gitignore` to be excluded. Instead, commit a `.env.example`  which serves as a guide for developers. For production, you should still set your environment variables in the standard way.
-    [read more](https://medium.com/@rafaelvidaurre/managing-environment-variables-in-node-js-2cb45a55195f)
+    Archivos `.env` para almacenar sus variables y agregarlas a` .gitignore` para excluirlas. En su lugar, suba un archivo `.env.example` que sirva de guía para los desarrolladores. [Leer mas](https://medium.com/@rafaelvidaurre/managing-environment-variables-in-node-js-2cb45a55195f)
 
-* It’s recommended to validate environment variables before your app starts.  [Look at this sample](./configWithTest.sample.js) using `joi` to validate provided values.
+* Se recomienda validar las variables de entorno antes de que se inicie la aplicación. [Un ejemplo](./configWithTest.sample.js) usando `joi` para validar los valores proporcionados.
     
   _Por que?:_
-    > It may save others from hours of troubleshooting.
+    > Puede salvar a otros de horas de resolución de problemas.
+
+    ***TBD:: TODO // FALTA IMPLEMENTAR ALGUN EJEMPLO EN JAVA / NET***
 
 <a name="consistent-dev-environments"></a>
-### 3.1 Consistent dev environments:
-* Set your node version in `engines` in `package.json`.
+### 3.1 Entornos de desarrollo consistentes:
+* Establezca la versión de su nodo en `engine` en` package.json`.
     
   _Por que?:_
-    > It lets others know the version of node the project works on. [read more...](https://docs.npmjs.com/files/package.json#engines)
+    > Les permite a otros saber la versión de node en el que trabaja el proyecto. [Lee mas...](https://docs.npmjs.com/files/package.json#engines)
 
-* Additionally, use `nvm` and create a  `.nvmrc`  in your project root. Don't forget to mention it in the documentation.
-
-  _Por que?:_
-    > Any one who uses `nvm` can simply use `nvm use` to switch to the suitable node version. [read more...](https://github.com/creationix/nvm)
-
-* It's a good idea to setup a `preinstall` script that checks node and npm versions.
+* Además, use `nvm` y cree un` .nvmrc` en la raíz de su proyecto. No olvides mencionarlo en la documentación.
 
   _Por que?:_
-    > Some dependencies may fail when installed by newer versions of npm.
+    > Cualquiera que use `nvm` puede simplemente usar` nvm use` para cambiar a la versión de nodo adecuada. [read more...](https://github.com/creationix/nvm)
+
+* Es una buena idea configurar un script `preinstall` que verifique las versiones de node y npm.
+
+  _Por que?:_
+    > Algunas dependencias pueden fallar cuando son instaladas por versiones más nuevas de npm.
     
-* Use Docker image if you can.
+* Use Docker si es posible.
 
   _Por que?:_
-    > It can give you a consistent environment across the entire workflow. Without much need to fiddle with dependencies or configs. [read more...](https://hackernoon.com/how-to-dockerize-a-node-js-application-4fbab45a0c19)
-
-* Use local modules instead of using globally installed modules.
-
-  _Por que?:_
-    > Lets you share your tooling with your colleague instead of expecting them to have it globally on their systems.
+    > Puede brindarle un entorno consistente en todo el flujo de trabajo. Sin mucha necesidad de jugar con dependencias o configuraciones. [Lee mas...](https://hackernoon.com/how-to-dockerize-a-node-js-application-4fbab45a0c19)
 
 
 <a name="consistent-dependencies"></a>
@@ -261,7 +249,7 @@ Having a good guideline for creating commits and sticking to it makes working wi
     > Too bad. For older versions of `npm`, use `—save --save-exact` when installing a new dependency and create `npm-shrinkwrap.json` before publishing. [read more...](https://docs.npmjs.com/files/package-locks)
 
 <a name="dependencies"></a>
-## 4. Dependencies
+## 4. Dependencieas
 
 ![Github](/images/modules.png)
 
@@ -269,7 +257,7 @@ Having a good guideline for creating commits and sticking to it makes working wi
 * See if any of your packages have become unused or irrelevant: `depcheck`. [read more...](https://www.npmjs.com/package/depcheck)
     
   _Por que?:_
-    > You may include an unused library in your code and increase the production bundle size. Find unused dependencies and get rid of them.
+    > Puede incluir una biblioteca no utilizada en su código y aumentar el tamaño del paquete de producción. Encuentra dependencias no utilizadas y deshazte de ellas.
 
 * Before using a dependency, check its download statistics to see if it is heavily used by the community: `npm-stat`. [read more...](https://npm-stat.com/)
     
