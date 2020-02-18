@@ -790,7 +790,7 @@ _Por que?:_
 
 * Use estos códigos de estado (http codes) para enviar con su respuesta para describir si **todo funcionó**,La **aplicación cliente hizo algo mal** o La **API hizo algo mal**.
     
-    _Which ones:_
+    _Cuales?:_
     > `200 OK` representa que la operacion funciono correctamente para los verbos `GET`, `PUT` o `POST` .
 
     > `201 Created` en la creacion de una nuevo objetco, en caso de usar un verbo POST si todo funciono correctamente deberia retorar este codigo http.
@@ -812,17 +812,18 @@ _Por que?:_
   _Por que?:_
     > La mayoría de los proveedores de API utilizan un pequeño subconjunto de códigos de estado HTTP. Por ejemplo, la API de Google GData usa solo 10 códigos de estado, Netflix usa 9 y Digg, solo 8. Por supuesto, estas respuestas contienen un cuerpo con información adicional. Hay más de 70 códigos de estado HTTP. Sin embargo, la mayoría de los desarrolladores no tienen todos los 70 memorizados. Por lo tanto, si elige códigos de estado que no son muy comunes, obligará a los desarrolladores de aplicaciones a no construir sus aplicaciones y a Wikipedia para averiguar qué está tratando de decirles. [Lee mas...](https://apigee.com/about/blog/technology/restful-api-design-what-about-errors)
 
-* Provide total numbers of resources in your response.
-* Accept `limit` and `offset` parameters.
+* Proveedor el total de numeros de resources de tu respuesta.
+* Aceptar los parametros `limit` y `offset` para limitar la respuesta.
 
-* The amount of data the resource exposes should also be taken into account. The API consumer doesn't always need the full representation of a resource. Use a fields query parameter that takes a comma separated list of fields to include:
+* La cantidad de datos que expone el recurso también debe tenerse en cuenta. El consumidor de API no siempre necesita la representación completa de un recurso. Use un parámetro de consulta de campos que tome una lista de campos separados por comas para incluir:
+
     ```
     GET /student?fields=id,name,age,class
     ```
-* Pagination, filtering, and sorting don’t need to be supported from start for all resources. Document those resources that offer filtering and sorting.
+* La paginación, el filtrado y la clasificación no necesitan ser compatibles desde el principio para todos los recursos. Documente los recursos que ofrecen filtrado y clasificación.
 
 <a name="api-security"></a>
-### 9.2 API security
+### 9.2 Seguridad de la API
 These are some basic security best practices:
 
 * Don't use basic authentication unless over a secure connection (HTTPS). Authentication tokens must not be transmitted in the URL: `GET /users/123?token=asdf....`
@@ -860,7 +861,7 @@ These are some basic security best practices:
 * Check the API Security Checklist Project. [read more...](https://github.com/shieldfy/API-Security-Checklist)
 
 <a name="api-documentation"></a>
-### 9.3 API documentation
+### 9.3 Documentación de la API
 * Fill the `API Reference` section in [README.md template](./README.sample.md) for API.
 * Describe API authentication methods with a code sample.
 * Explaining The URL Structure (path only, no root URL) including The request type (Method).
