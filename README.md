@@ -791,27 +791,26 @@ _Por que?:_
 * Use estos códigos de estado (http codes) para enviar con su respuesta para describir si **todo funcionó**,La **aplicación cliente hizo algo mal** o La **API hizo algo mal**.
     
     _Which ones:_
-    > `200 OK` response represents success for `GET`, `PUT` or `POST` requests.
+    > `200 OK` representa que la operacion funciono correctamente para los verbos `GET`, `PUT` o `POST` .
 
-    > `201 Created` for when a new instance is created. Creating a new instance, using `POST` method returns `201` status code.
+    > `201 Created` en la creacion de una nuevo objetco, en caso de usar un verbo POST si todo funciono correctamente deberia retorar este codigo http.
 
-    > `204 No Content` response represents success but there is no content to be sent in the response. Use it when `DELETE` operation succeeds.
+    > `204 No Content` la respuesta representa el éxito pero no hay contenido para enviar en la respuesta. Úselo cuando la operación `DELETE` tenga éxito.
 
-    > `304 Not Modified` response is to minimize information transfer when the recipient already has cached representations.
+    > `304 Not Modified` la respuesta es minimizar la transferencia de información cuando el destinatario ya tiene representaciones en caché.
 
-    > `400 Bad Request` for when the request was not processed, as the server could not understand what the client is asking for.
+    > `400 Bad Request` para cuando la solicitud no se procesó, ya que el servidor no pudo entender lo que el cliente solicita.
 
-    > `401 Unauthorized` for when the request lacks valid credentials and it should re-request with the required credentials.
+    > `401 Unauthorized` para cuando la solicitud carece de credenciales válidas y debe volver a solicitarla con las credenciales requeridas.
 
-    > `403 Forbidden` means the server understood the request but refuses to authorize it.
+    > `403 Forbidden` significa que el servidor entendió la solicitud pero se niega a autorizarla.
 
-    > `404 Not Found` indicates that the requested resource was not found. 
+    > `404 Not Found` indica que no se encontró el recurso solicitado.
 
-    > `500 Internal Server Error` indicates that the request is valid, but the server could not fulfill it due to some unexpected condition.
+    > `500 Internal Server Error` indica que la solicitud es válida, pero el servidor no pudo cumplirla debido a alguna condición inesperada.
 
   _Por que?:_
-    > Most API providers use a small subset HTTP status codes. For example, the Google GData API uses only 10 status codes, Netflix uses 9, and Digg, only 8. Of course, these responses contain a body with additional information. There are over 70 HTTP status codes. However, most developers don't have all 70 memorized. So if you choose status codes that are not very common you will force application developers away from building their apps and over to wikipedia to figure out what you're trying to tell them. [read more...](https://apigee.com/about/blog/technology/restful-api-design-what-about-errors)
-
+    > La mayoría de los proveedores de API utilizan un pequeño subconjunto de códigos de estado HTTP. Por ejemplo, la API de Google GData usa solo 10 códigos de estado, Netflix usa 9 y Digg, solo 8. Por supuesto, estas respuestas contienen un cuerpo con información adicional. Hay más de 70 códigos de estado HTTP. Sin embargo, la mayoría de los desarrolladores no tienen todos los 70 memorizados. Por lo tanto, si elige códigos de estado que no son muy comunes, obligará a los desarrolladores de aplicaciones a no construir sus aplicaciones y a Wikipedia para averiguar qué está tratando de decirles. [Lee mas...](https://apigee.com/about/blog/technology/restful-api-design-what-about-errors)
 
 * Provide total numbers of resources in your response.
 * Accept `limit` and `offset` parameters.
