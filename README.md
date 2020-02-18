@@ -22,18 +22,17 @@ Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas
     - [Hacer cumplir los estándares de estilo de código](#enforcing-code-style-standards)
 - [Logging](#logging)
 - [API](#api)
-    - [Diseño delAPI](#api-design)
+    - [Diseño del API](#api-design)
     - [Seguridad de la API](#api-security)
     - [Documentación de la API](#api-documentation)
 
 <a name="git"></a>
 ## 1. Git
-![Git](/images/branching.png)
 <a name="some-git-rules"></a>
 
 ### 1.1 Algunas reglas de Git
 Hay un conjunto de reglas a tener en cuenta:
-* Realizar nuestro trabajo en una rama de 'feature'
+* Realizar nuestro trabajo en una rama de `feature`
     
   _Por que?:_
     >Porque de esta manera todo el trabajo se realiza de forma aislada en una rama dedicada en lugar de la rama principal. Le permite enviar múltiples solicitudes de pull request sin confusión. Puede iterar sin contaminar la rama maestra con código potencialmente inestable e inacabado.
@@ -80,7 +79,336 @@ Hay un conjunto de reglas a tener en cuenta:
 
 Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workflow] (https://www.atlassian.com/git/tutorials/comparing-workflows#feature-branch-workflow) con [Interactive Rebasing] (https: //www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing) y algunos elementos de [Gitflow] (https://www.atlassian.com/git/tutorials/comparating-workflows#gitflow-workflow).  
 
-***TBD:: TODO // FALTA AGREGAR EL RESTO DE GITFLOW***
+* Verificamos que contamos con git flow.
+
+    ```sh
+    git flow
+    ```
+
+  _No lo tengo, que hago?:_
+   > Procedemos a instalar el paquete.
+  ```sh
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E1DD270288B4E6030699E45FA1715D88E1DF1F24
+  sudo su -c "echo 'deb http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main' > /etc/apt/sources.list.d/git.list"
+
+  sudo apt-get update 
+  sudo apt-get install git-flow
+    ```
+
+* Creacion de un proyeto nuevo, en este ejemplo es `gitflow-empty`.
+
+    ```sh
+    $ mkdir gitflow-empty
+    $ cd gitflow-empty
+    $ echo "# gitflow-empty" >> README.md
+    $ git init
+    Initialized empty Git repository in C:/Repos/gitflow-empty/.git/
+    $ git add README.md
+    warning: LF will be replaced by CRLF in README.md.
+    The file will have its original line endings in your working directory
+    $ git commit -m "first commit"
+    [master (root-commit) af85f5b] first commit
+    1 file changed, 1 insertion(+)
+    create mode 100644 README.md
+    $ git remote add origin https://github.com/jose-franco/gitflow-empty.git
+    $ git push -u origin master
+    Enumerating objects: 3, done.
+    Counting objects: 100% (3/3), done.
+    Writing objects: 100% (3/3), 230 bytes | 230.00 KiB/s, done.
+    Total 3 (delta 0), reused 0 (delta 0)
+    To https://github.com/jose-franco/gitflow-empty.git
+    * [new branch]      master -> master
+    Branch 'master' set up to track remote branch 'master' from 'origin'.
+    ```
+    Ahora generamos el branch de develop
+    ```sh
+    $ git branch develop
+    $ git push -u origin develop
+    Total 0 (delta 0), reused 0 (delta 0)
+    remote:
+    remote: Create a pull request for 'develop' on GitHub by visiting:
+    remote:      https://github.com/jose-franco/gitflow-empty/pull/new/develop
+    remote:
+    To https://github.com/jose-franco/gitflow-empty.git
+    * [new branch]      develop -> develop
+    Branch 'develop' set up to track remote branch 'develop' from 'origin'.
+
+    ```
+
+  Tras ejecutar este comando, git-flow me pregunta una serie de cuestiones sobre la configuración del repositorio, usamos la configuracion por defecto.
+
+    ```sh
+    $ git flow init
+
+    Which branch should be used for bringing forth production releases?
+      - develop
+      - master
+    Branch name for production releases: [master]
+
+    Which branch should be used for integration of the "next release"?
+      - develop
+    Branch name for "next release" development: [develop]
+
+    How to name your supporting branch prefixes?
+    Feature branches? [feature/]
+    Bugfix branches? [bugfix/]
+    Release branches? [release/]
+    Hotfix branches? [hotfix/]
+    Support branches? [support/]
+    Version tag prefix? []
+    Hooks and filters directory? [C:/Repos/gitflow-empty/.git/hooks]
+    ```
+
+  _Tip:_
+    > git-flow configura el repositorio Git usando el comando "git config". git-flow obtiene los valores introducidos al ejecutar este comando y, usando el comando "git config", lo almacena en el archivo ".git/config".
+
+
+* Como inicializar git flow en un repositorio existente.
+
+    ```sh
+    git clone https://github.com/jose-franco/gitflow-empty.git
+    git branch -a -v  #verificamos si existen o no los branch de git flow
+    git flow init
+    ```
+
+  _Tip:_
+    > Si ejecuto el comando git flow init vuelvo a indicar cuáles son las ramas y los prefijos que usaré para este proyecto. En este caso uso los valores por defecto sugeridos por git-flow.
+
+* Para verificar la lista de features que estan actualmente podemos verificarlo de la siguiente manera.
+
+    ```sh
+    $ git flow feature list
+    No feature branches exist.
+
+    You can start a new feature branch:
+
+    git flow feature start <name> [<base>]
+    ```
+* Cuando tenemos que desarrollar un nuevo feature, debemos proceder de la siguiente manera. Supongamos que es una nueva funcionalidad llamada new-license-control.
+
+    ```sh
+    $  git flow feature start new-license-control
+    Switched to a new branch 'feature/new-license-control'
+
+    Summary of actions:
+    - A new branch 'feature/new-license-control' was created, based on 'develop'
+    - You are now on branch 'feature/new-license-control'
+
+    Now, start committing on your feature. When done, use:
+
+    git flow feature finish new-license-control
+    ```
+
+  _Por que?:_
+    > TBD
+
+  _Alternativa:_
+    > Se puede generar sin las extensiones de git flow, y se podria usar directamente git.
+    ```sh
+    $  git checkout -b new-license-control develop
+    ```
+
+* En caso de necesitar guardar nuestros cambios, procedemos a hacer un push del feature.
+
+    ```sh
+    $ git flow feature publish new-license-control
+    Enumerating objects: 2, done.
+    Counting objects: 100% (2/2), done.
+    Writing objects: 100% (2/2), 169 bytes | 169.00 KiB/s, done.
+    Total 2 (delta 0), reused 0 (delta 0)
+    To https://github.com/jose-franco/gitflow-empty.git
+    * [new branch]      feature/new-license-control -> feature/new-license-control
+    Branch 'feature/new-license-control' set up to track remote branch 'feature/new-license-control' from 'origin'.
+    Already on 'feature/new-license-control'
+    Your branch is up to date with 'origin/feature/new-license-control'.
+
+    Summary of actions:
+    - The remote branch 'feature/new-license-control' was created or updated
+    - The local branch 'feature/new-license-control' was configured to track the remote branch
+    - You are now on branch 'feature/new-license-control'
+    ```
+
+  _Por que?:_
+    > TBD
+ 
+* Si otro desarrollador necesita bajar el feature nuestro, debemos seguir los siguientes pasos.
+
+    ```sh
+    $ git clone https://github.com/jose-franco/gitflow-empty.git
+    Cloning into 'gitflow-empty'...
+    remote: Enumerating objects: 6, done.
+    remote: Counting objects: 100% (6/6), done.
+    remote: Compressing objects: 100% (3/3), done.
+    remote: Total 6 (delta 0), reused 6 (delta 0), pack-reused 0
+    Unpacking objects: 100% (6/6), done.
+    $ cd gitflow-empty
+    $ git flow init
+
+    Which branch should be used for bringing forth production releases?
+      - master
+    Branch name for production releases: [master]
+    Branch name for "next release" development: [develop]
+
+    How to name your supporting branch prefixes?
+    Feature branches? [feature/]
+    Bugfix branches? [bugfix/]
+    Release branches? [release/]
+    Hotfix branches? [hotfix/]
+    Support branches? [support/]
+    Version tag prefix? []
+    Hooks and filters directory? [/home/jsfrnc/Repos/gitflow-empty/.git/hooks]
+    $ git flow feature track new-license-control
+    Branch 'feature/new-license-control' set up to track remote branch 'feature/new-license-control' from 'origin'.
+    Switched to a new branch 'feature/new-license-control'
+
+    Summary of actions:
+    - A new remote tracking branch 'feature/new-license-control' was created
+    - You are now on branch 'feature/new-license-control'
+    $ git flow feature pull origin new-license-control
+    The command 'git flow feature pull' will be deprecated per version 2.0.0. Use 'git flow feature track' instead.
+    Pulled origin's changes into feature/new-license-control.
+    $ git branch -a
+      develop
+    * feature/new-license-control
+      master
+      remotes/origin/HEAD -> origin/master
+      remotes/origin/develop
+      remotes/origin/feature/new-license-control
+      remotes/origin/master
+    ```
+
+  _Por que?:_
+    > TBD
+
+* Cuando finalizamos el trabajo en el feature, procedemos a cerrar este branch.
+
+    ```sh
+    $ git flow feature finish new-license-control
+    Switched to branch 'develop'
+    Your branch is up to date with 'origin/develop'.
+    Updating af85f5b..52044ef
+    Fast-forward
+    licencia.txt | 1 +
+    1 file changed, 1 insertion(+)
+    create mode 100644 licencia.txt
+    To https://github.com/jose-franco/gitflow-empty.git
+    - [deleted]         feature/new-license-control
+    Deleted branch feature/new-license-control (was 52044ef).
+
+    Summary of actions:
+    - The feature branch 'feature/new-license-control' was merged into 'develop'
+    - Feature branch 'feature/new-license-control' has been locally deleted; it has been remotely deleted from 'origin'
+    - You are now on branch 'develop'
+    ```
+
+    Este comando realiza las siguientes operaciones:
+    - La rama 'feature/new-license-control' es fusionada en la rama 'develop'
+    - La rama local 'feature/new-license-control' se elimina.
+    - La rama remota 'feature/new-license-control' se elimina del 'origin'.
+    - La rama activa pasa a ser 'develop'.
+
+     
+    ```sh
+    $ git branch -a -v
+    * develop                52044ef [ahead 1] subimos licencia
+      master                 af85f5b first commit
+      remotes/origin/develop af85f5b first commit
+      remotes/origin/master  af85f5b first commit
+
+    $ git push
+    Enumerating objects: 4, done.
+    Counting objects: 100% (4/4), done.
+    Delta compression using up to 8 threads
+    Compressing objects: 100% (2/2), done.
+    Writing objects: 100% (3/3), 291 bytes | 291.00 KiB/s, done.
+    Total 3 (delta 0), reused 0 (delta 0)
+    To https://github.com/jose-franco/gitflow-empty.git
+      af85f5b..52044ef  develop -> develop
+    ```
+    Verificamos y hacemos un push.
+
+  _Tip:_
+    > Como veran, las extensiones de git flow simplifican la operatoria.
+
+
+  _Alternativa:_
+    > Se puede generar sin las extensiones de git flow, y se podria usar directamente git. El trabajo es incorporado en la rama new-license-control mediante los correspondientes commits. Una vez finalizado el trabajo, me cambio a la rama develop, que es la que va a recibir la nueva funcionalidad, borro la rama y la subo al repositorio remoto.
+    ```sh
+    $  git checkout develop 
+    $ git merge --no-ff new-license-control 
+    $ git branch -d new-license-control 
+    $ git push origin develop
+    ```
+  _Tip:_
+    > El parámetro "--no-ff" en la fusión de las dos ramas fuerza la creación de un nuevo commit aunque la fusión se pudiera haber hecho mediante fast-forward (si se hubiera llevado a cabo de forma recursiva este nuevo commit se crea siempre). Este commit permite en un futuro localizar donde se ha incorporado una determinada funcionalidad (un conjunto de commits) y poder revertirla.
+
+
+* Como genero un Release?
+
+    Voy a suponer que la versión estable que se encuentra en producción es la 2.5.1 y que he decidido publicar la versión 2.6 en la siguiente release (siguiendo, por ejemplo, la convención de versionamiento semántico).
+
+    ```sh
+    $ git checkout -b release-2.6 develop
+    ```
+
+    Cuando la release está lista para ser publicada, llevo esta rama de release a la rama master y etiqueto este commit para poder conocer posteriormente qué commit ha sido enviado a producción con esa versión concreta.
+
+    ```sh
+    $ git checkout master 
+    $ git merge --no-ff release-2.6 
+    $ git tag -a 2.6
+    ```
+
+    Los cambios que se han producido en la rama de release también tienen que ser llevados a la rama de develop
+
+    ```sh
+    $ git checkout develop $ 
+    $ git merge --no-ff release-2.6
+    ```
+
+    Tras llevar los cambios a las ramas master y develop, ahora puedo borrar la rama de release
+    ```sh
+    $ git branch -d release-2.6
+    ```
+ 
+* Como genero un Hotfix?
+    Voy a suponer que he encontrado en la release anterior, etiquetada con el nombre "2.6" un error. Lo primero que hago es crear una nueva rama de hotfix a partir de la rama master.
+
+    ```sh
+    $ git checkout -b hotfix-2.6.1 master
+    ```
+
+    Cuando la release está lista para ser publicada, llevo esta rama de bugfix a la rama master y etiqueto este commit para poder conocer posteriormente qué commit ha sido enviado a producción con esa versión concreta.
+
+    ```sh
+    $ git checkout master $ 
+    $ git merge --no-ff bugfix-2.6.1 
+    $ git tag -a 2.6.1
+    ```
+    Los cambios que se han producido en la rama de bugfix también tienen que ser llevados a la rama de develop
+
+    ```sh
+    $ git checkout develop 
+    $ git merge --no-ff bugfix-2.6.1
+    ```
+    Tras llevar los cambios a las ramas master y develop, ahora puedo borrar la rama de bugfix
+
+    ```sh
+    $ git branch -d bugfix-2.6.1
+    ```
+ 
+
+ 
+
+* Depurar ramas muertas de nuestra carpeta local.
+
+    ```sh
+    $  git checkout master; git pull origin master; git fetch --all -p; git branch -vv | grep ": gone]" | awk '{ print $1 }' | xargs -n 1 git branch -D
+    ```
+
+  _Por que?:_
+    > Se puede dar que otros companeros de trabajo generaron branch los cuales caducaron y generar estos cadaveres en nuestro equipo, es bueno tener todo al dia.
+ 
  
 * Comitear un cambio.
     ```sh
@@ -171,8 +499,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
  <a name="documentation"></a>
 ## 2. Documentacion
 
-![Documentation](/images/documentation.png)
-
 * Use esta [plantilla] (./README.sample.md) para `README.md`, siéntase libre de agregar secciones.
 * Para proyectos con más de un repositorio, proporcione enlaces a ellos en sus respectivos archivos `README.md`.
 * Mantenga `README.md` actualizado a medida que evoluciona un proyecto.
@@ -183,8 +509,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 <a name="environments"></a>
 ## 3. Ambientes/Environments
-
-![Environments](/images/laptop.png)
 
 * Defina entornos separados de `desarrollo`,` prueba` y `producción` si es necesario.
 
@@ -249,9 +573,7 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
     > Too bad. For older versions of `npm`, use `—save --save-exact` when installing a new dependency and create `npm-shrinkwrap.json` before publishing. [read more...](https://docs.npmjs.com/files/package-locks)
 
 <a name="dependencies"></a>
-## 4. Dependencieas
-
-![Github](/images/modules.png)
+## 4. Dependencias
 
 * Keep track of your currently available packages: e.g., `npm ls --depth=0`. [read more...](https://docs.npmjs.com/cli/ls)
 * See if any of your packages have become unused or irrelevant: `depcheck`. [read more...](https://www.npmjs.com/package/depcheck)
@@ -280,7 +602,7 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 <a name="testing"></a>
 ## 5. Testing
-![Testing](/images/testing.png)
+
 * Have a `test` mode environment if needed.
 
   _Por que?:_
@@ -322,7 +644,7 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 <a name="structure-and-naming"></a>
 ## 6. Structure and Naming
-![Structure and Naming](/images/folder-tree.png)
+ 
 * Organize your files around product features / pages / components, not roles. Also, place your test files next to their implementation.
 
 
@@ -380,8 +702,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 <a name="code-style"></a>
 ## 7. Code style
-
-![Code style](/images/code-style.png)
 
 <a name="code-style-check"></a>
 ### 7.1 Some code style guidelines
@@ -468,8 +788,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 <a name="logging"></a>
 ## 8. Logging
 
-![Logging](/images/logging.png)
-
 * Evite los registros de la consola del lado del cliente en producción
 
   _Por que?:_
@@ -484,8 +802,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 <a name="api"></a>
 ## 9. API
 <a name="api-design"></a>
-
-![API](/images/api.png)
 
 ### 9.1 API design
 
