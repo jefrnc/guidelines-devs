@@ -445,24 +445,24 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
     > It makes it more natural to read the source code.
 
 <a name="enforcing-code-style-standards"></a>
-### 7.2 Enforcing code style standards
+### 7.2 Hacer cumplir los estándares de estilo de código
 
-* Use a [.editorconfig](http://editorconfig.org/) file which helps developers define and maintain consistent coding styles between different editors and IDEs on the project.
-
-  _Por que?:_
-    > The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems.
-
-* Have your editor notify you about code style errors. Use [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier) and [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) with your existing ESLint configuration. [read more...](https://github.com/prettier/eslint-config-prettier#installation)
-
-* Consider using Git hooks.
+* Utilice un archivo [.editorconfig] (http://editorconfig.org/) que ayuda a los desarrolladores a definir y mantener estilos de codificación consistentes entre diferentes editores e IDE en el proyecto.
 
   _Por que?:_
-    > Git hooks greatly increase a developer's productivity. Make changes, commit and push to staging or production environments without the fear of breaking builds. [read more...](http://githooks.com/)
+    > El proyecto EditorConfig consta de un formato de archivo para definir estilos de codificación y una colección de complementos de editor de texto que permiten a los editores leer el formato de archivo y adherirse a los estilos definidos. Los archivos EditorConfig son fáciles de leer y funcionan muy bien con los sistemas de control de versiones.
 
-* Use Prettier with a precommit hook.
+* Haga que su editor le notifique sobre los errores de estilo de código. Utilice [eslint-plugin-prettier] (https://github.com/prettier/eslint-plugin-prettier) y [eslint-config-prettier] (https://github.com/prettier/eslint-config-prettier) con su configuración existente de ESLint. [leer más ...] (https://github.com/prettier/eslint-config-prettier#installation)
+
+* Considera usar Git hooks.
 
   _Por que?:_
-    > While `prettier` itself can be very powerful, it's not very productive to run it simply as an npm task alone each time to format code. This is where `lint-staged` (and `husky`) come into play. Read more on configuring `lint-staged` [here](https://github.com/okonet/lint-staged#configuration) and on configuring `husky` [here](https://github.com/typicode/husky).
+    > Los Git hooks aumentan enormemente la productividad de un desarrollador. Realice cambios, comitee y haga push a stagging o produccion sin temor a romper las compilaciones. [Lee mas...](http://githooks.com/)
+
+* Use Prettier con un precommit hook.
+
+  _Por que?:_
+    > Si bien `prettier` en sí mismo puede ser muy poderoso, no es muy productivo ejecutarlo simplemente como una tarea npm solo cada vez que formatea el código. Aquí es donde entran en juego `lint-staged` (y` husky`). Lea más sobre la configuración de `lint-staged` [aquí] (https://github.com/okonet/lint-staged#configuration) y sobre la configuración de` husky` [aquí](https://github.com/typicode/husky).
 
 
 <a name="logging"></a>
@@ -470,16 +470,15 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 ![Logging](/images/logging.png)
 
-* Avoid client-side console logs in production
+* Evite los registros de la consola del lado del cliente en producción
 
   _Por que?:_
-    > Even though your build process can (should) get rid of them, make sure that your code style checker warns you about leftover console logs.
+    > Aunque su proceso de compilación puede (debería) deshacerse de ellos, asegúrese de que su verificador de estilo de código le advierta sobre los registros de consola restantes.
 
-* Produce readable production logging. Ideally use logging libraries to be used in production mode (such as [winston](https://github.com/winstonjs/winston) or
-[node-bunyan](https://github.com/trentm/node-bunyan)).
+* Producir registros de producción legibles. Idealmente, use componentes de loggin para usar en modo de producción (como [winston] (https://github.com/winstonjs/winston) o [nodo-bunyan] (https://github.com/trentm/node-bunyan)).
 
   _Por que?:_
-    > It makes your troubleshooting less unpleasant with colorization, timestamps, log to a file in addition to the console or even logging to a file that rotates daily. [read more...](https://blog.risingstack.com/node-js-logging-tutorial/)
+    > Hace que su solución de problemas sea menos desagradable con la coloración, las marcas de tiempo, el registro en un archivo además de la consola o incluso el registro en un archivo que fracciona diariamente. [Lee mas...](https://blog.risingstack.com/node-js-logging-tutorial/)
 
 
 <a name="api"></a>
@@ -490,24 +489,24 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
 
 ### 9.1 API design
 
-_Why:_
-> Because we try to enforce development of sanely constructed RESTful interfaces, which team members and clients can consume simply and consistently.  
+_Por que?:_
+> Porque tratamos de forzar el desarrollo de interfaces RESTful construidas de manera sensata, que los miembros del equipo y los clientes puedan consumir de manera simple y consistente.
 
-_Why:_
-> Lack of consistency and simplicity can massively increase integration and maintenance costs. Which is why `API design` is included in this document.
+_Por que?:_
+> La falta de consistencia y simplicidad puede aumentar enormemente los costos de integración y mantenimiento. Es por eso que el "diseño API" está incluido en este documento.
 
 
-* We mostly follow resource-oriented design. It has three main factors: resources, collection, and URLs.
-    * A resource has data, gets nested, and there are methods that operate against it.
-    * A group of resources is called a collection.
-    * URL identifies the online location of resource or collection.
+* Principalmente seguimos un diseño orientado a los recursos. Tiene tres factores principales: recursos, colecciones y URL.
+    * Un recurso tiene datos, se anida y existen métodos que operan en su contra.
+    * Un grupo de recursos se llama colección.
+    * URL identifica la ubicación en línea del recurso o colección.
     
   _Por que?:_
-    > This is a very well-known design to developers (your main API consumers). Apart from readability and ease of use, it allows us to write generic libraries and connectors without even knowing what the API is about.
+    > Este es un diseño muy conocido para los desarrolladores (sus principales consumidores de API). Además de la legibilidad y la facilidad de uso, nos permite escribir bibliotecas y conectores genéricos sin siquiera saber de qué se trata la API.
 
-* use kebab-case for URLs.
-* use camelCase for parameters in the query string or resource fields.
-* use plural kebab-case for resource names in URLs.
+* use kebab-case para las URL. TBD // BUSCAR EJEMPLO
+* use camelCase para los parámetros de la QueryString o en los campos de recursos.
+* use plural kebab-case para nombres de recursos en URL.
 
 * Always use a plural nouns for naming a url pointing to a collection: `/users`.
 
