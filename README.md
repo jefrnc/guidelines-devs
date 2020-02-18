@@ -13,10 +13,8 @@ Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas
 - [Documentacion](#documentation)
 - [Ambientes](#environments)
     - [Entornos de desarrollo consistentes](#consistent-dev-environments)
-    - [Dependencias consistentes](#consistent-dependencies)
 - [Dependencias](#dependencies)
 - [Testing](#testing)
-- [Estructura y nomenclatura](#structure-and-naming)
 - [Estilo de código](#code-style)
     - [Algunas pautas de estilo de código](#code-style-check)
     - [Hacer cumplir los estándares de estilo de código](#enforcing-code-style-standards)
@@ -397,13 +395,13 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     $ git branch -d bugfix-2.6.1
     ```
  
-
- 
-
 * Depurar ramas muertas de nuestra carpeta local.
 
     ```sh
-    $  git checkout master; git pull origin master; git fetch --all -p; git branch -vv | grep ": gone]" | awk '{ print $1 }' | xargs -n 1 git branch -D
+    $ git checkout master; 
+    $ git pull origin master; 
+    $ git fetch --all -p; 
+    $ git branch -vv | grep ": gone]" | awk '{ print $1 }' | xargs -n 1 git branch -D
     ```
 
   _Por que?:_
@@ -555,23 +553,6 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
     > Puede brindarle un entorno consistente en todo el flujo de trabajo. Sin mucha necesidad de jugar con dependencias o configuraciones. [Lee mas...](https://hackernoon.com/how-to-dockerize-a-node-js-application-4fbab45a0c19)
 
 
-<a name="consistent-dependencies"></a>
-### 3.2 Consistent dependencies:
-
-* Make sure your team members get the exact same dependencies as you.
-
-  _Por que?:_
-    > Because you want the code to behave as expected and identical in any development machine [read more...](https://kostasbariotis.com/consistent-dependencies-across-teams/)
-
-    _how:_
-    > Use `package-lock.json` on `npm@5` or higher
-
-    _I don't have npm@5:_
-    > Alternatively you can use `Yarn` and make sure to mention it in `README.md`. Your lock file and `package.json` should have the same versions after each dependency update. [read more...](https://yarnpkg.com/en/)
-
-    _I don't like the name `Yarn`:_
-    > Too bad. For older versions of `npm`, use `—save --save-exact` when installing a new dependency and create `npm-shrinkwrap.json` before publishing. [read more...](https://docs.npmjs.com/files/package-locks)
-
 <a name="dependencies"></a>
 ## 4. Dependencias
 
@@ -642,64 +623,7 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
   _Por que?:_
     > It's a handy note you leave behind for other developers or DevOps experts or QA or anyone who gets lucky enough to work on your code.
 
-<a name="structure-and-naming"></a>
-## 6. Structure and Naming
  
-* Organize your files around product features / pages / components, not roles. Also, place your test files next to their implementation.
-
-
-    **Bad**
-
-    ```
-    .
-    ├── controllers
-    |   ├── product.js
-    |   └── user.js
-    ├── models
-    |   ├── product.js
-    |   └── user.js
-    ```
-
-    **Good**
-
-    ```
-    .
-    ├── product
-    |   ├── index.js
-    |   ├── product.js
-    |   └── product.test.js
-    ├── user
-    |   ├── index.js
-    |   ├── user.js
-    |   └── user.test.js
-    ```
-
-  _Por que?:_
-    > Instead of a long list of files, you will create small modules that encapsulate one responsibility including its test and so on. It gets much easier to navigate through and things can be found at a glance.
-
-* Put your additional test files to a separate test folder to avoid confusion.
-
-  _Por que?:_
-    > It is a time saver for other developers or DevOps experts in your team.
-
-* Use a `./config` folder and don't make different config files for different environments.
-
-  _Por que?:_
-    >When you break down a config file for different purposes (database, API and so on); putting them in a folder with a very recognizable name such as `config` makes sense. Just remember not to make different config files for different environments. It doesn't scale cleanly, as more deploys of the app are created, new environment names are necessary.
-    Values to be used in config files should be provided by environment variables. [read more...](https://medium.com/@fedorHK/no-config-b3f1171eecd5)
-    
-
-* Put your scripts in a `./scripts` folder. This includes `bash` and `node` scripts.
-
-  _Por que?:_
-    >It's very likely you may end up with more than one script, production build, development build, database feeders, database synchronization and so on.
-    
-
-* Place your build output in a `./build` folder. Add `build/` to `.gitignore`.
-
-  _Por que?:_
-    >Name it what you like, `dist` is also cool. But make sure that keep it consistent with your team. What gets in there is most likely generated  (bundled, compiled, transpiled) or moved there. What you can generate, your teammates should be able to generate too, so there is no point committing them into your remote repository. Unless you specifically want to. 
-
 <a name="code-style"></a>
 ## 7. Code style
 
