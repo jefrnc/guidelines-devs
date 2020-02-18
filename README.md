@@ -519,8 +519,7 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
     > Tiene tokens, contraseñas y otra información valiosa allí. Su configuración debe estar correctamente separada de las partes internas de la aplicación como si la base de código pudiera hacerse pública en cualquier momento.
 
     _Como?:_
-    >
-    Archivos `.env` para almacenar sus variables y agregarlas a` .gitignore` para excluirlas. En su lugar, suba un archivo `.env.example` que sirva de guía para los desarrolladores. [Leer mas](https://medium.com/@rafaelvidaurre/managing-environment-variables-in-node-js-2cb45a55195f)
+    > Archivos `.env` para almacenar sus variables y agregarlas a` .gitignore` para excluirlas. En su lugar, suba un archivo `.env.example` que sirva de guía para los desarrolladores. [Leer mas](https://medium.com/@rafaelvidaurre/managing-environment-variables-in-node-js-2cb45a55195f)
 
 * Se recomienda validar las variables de entorno antes de que se inicie la aplicación. [Un ejemplo](./configWithTest.sample.js) usando `joi` para validar los valores proporcionados.
     
@@ -699,7 +698,6 @@ _Por que?:_
     > Porque para CRUD usamos métodos HTTP en URL de `resource` o` collection`. Los verbos de los que estábamos hablando son en realidad `Controllers`. Usualmente no desarrollas muchos de estos. [Lee mas...](https://byrondover.github.io/post/restful-api-guidelines/#controller)
  
 
-
 * El cuerpo de la solicitud o el tipo de respuesta es JSON, entonces siga `camelCase` para los nombres de propiedad` JSON` para mantener la coherencia.
   _Por que?:_
     > Se use que muchas de las integraciones que tenemos son en JavaScript, donde se supone que el lenguaje de programación para generar y analizar JSON.
@@ -824,66 +822,65 @@ _Por que?:_
 
 <a name="api-security"></a>
 ### 9.2 Seguridad de la API
-These are some basic security best practices:
+Estas son algunas de las mejores prácticas básicas de seguridad:
 
-* Don't use basic authentication unless over a secure connection (HTTPS). Authentication tokens must not be transmitted in the URL: `GET /users/123?token=asdf....`
-
-  _Por que?:_
-    > Because Token, or user ID and password are passed over the network as clear text (it is base64 encoded, but base64 is a reversible encoding), the basic authentication scheme is not secure. [read more...](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
-
-* Tokens must be transmitted using the Authorization header on every request: `Authorization: Bearer xxxxxx, Extra yyyyy`.
-
-* Authorization Code should be short-lived.
-
-* Reject any non-TLS requests by not responding to any HTTP request to avoid any insecure data exchange. Respond to HTTP requests by `403 Forbidden`.
-
-* Consider using Rate Limiting.
+* No use la autenticación básica a menos que sea a través de una conexión segura (HTTPS). Los tokens de autenticación no deben transmitirse en la URL: `GET /users/123?token=asdf....`
 
   _Por que?:_
-    > To protect your APIs from bot threats that call your API thousands of times per hour. You should consider implementing rate limit early on.
+    > Debido a que el token, o ID de usuario y contraseña se pasan a través de la red como texto sin cifrar (está codificado en base64, pero base64 es una codificación reversible), el esquema de autenticación básico no es seguro. [Lee mas...](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication)
 
-* Setting HTTP headers appropriately can help to lock down and secure your web application. [read more...](https://github.com/helmetjs/helmet)
+* Los tokens deben transmitirse utilizando el encabezado de autorización en cada solicitud: `Authorization: Bearer xxxxxx, Extra yyyyy`.
 
-* Your API should convert the received data to their canonical form or reject them. Return 400 Bad Request with details about any errors from bad or missing data.
+* El código de autorización debe ser de corta duración.
 
-* All the data exchanged with the REST API must be validated by the API.
+* Rechace cualquier solicitud que no sea TLS, evite cualquier intercambio de datos inseguro. Responda a las solicitudes HTTP por `403 Forbidden`.
 
-* Serialize your JSON.
+* Considere usar un Rate Limiting.
 
   _Por que?:_
-    > A key concern with JSON encoders is preventing arbitrary JavaScript remote code execution within the browser... or, if you're using node.js, on the server. It's vital that you use a proper JSON serializer to encode user-supplied data properly to prevent the execution of user-supplied input on the browser.
+    > Para proteger sus API de amenazas de bot que llaman a su API miles de veces por hora. Debería considerar implementar un límite de tasa desde el principio.
 
-* Validate the content-type and mostly use `application/*json` (Content-Type header).
+* Establecer los encabezados HTTP de manera adecuada puede ayudar a bloquear y proteger su aplicación web. [Lee mas...](https://github.com/helmetjs/helmet)
+
+* Su API debe convertir los datos recibidos a su forma canónica o rechazarlos. Devuelva un codigo de error 400 en caso de datos incorrectos o faltantes.
+
+* Todos los datos intercambiados con la API REST deben ser validados por la API.
+
+* Serialize su JSON.
+
+  _Por que?:_
+    > Es importante validar la mensajeria json, par evitar cualquier tipo de injeccion de codigo malicioso.
+
+* Valide que el content-type use `application/*json` (Content-Type header).
     
   _Por que?:_
-    > For instance, accepting the `application/x-www-form-urlencoded` mime type allows the attacker to create a form and trigger a simple POST request. The server should never assume the Content-Type. A lack of Content-Type header or an unexpected Content-Type header should result in the server rejecting the content with a `4XX` response.
+    > Por ejemplo, aceptar el tipo mime `application / x-www-form-urlencoded` le permite al atacante crear un formulario y activar una simple solicitud POST. El servidor nunca debe asumir el tipo de contenido. La falta de un encabezado de tipo de contenido o un encabezado inesperado de tipo de contenido debe hacer que el servidor rechace el contenido con una respuesta `4XX`.
 
-* Check the API Security Checklist Project. [read more...](https://github.com/shieldfy/API-Security-Checklist)
+* Revise este proyecto API Security Checklist. [Ver mas](https://github.com/shieldfy/API-Security-Checklist)
 
 <a name="api-documentation"></a>
 ### 9.3 Documentación de la API
-* Fill the `API Reference` section in [README.md template](./README.sample.md) for API.
-* Describe API authentication methods with a code sample.
-* Explaining The URL Structure (path only, no root URL) including The request type (Method).
+* Complete la sección `Referencia de API` en [README.md template](./README.sample.md).
+* Describa los métodos de autenticación de API con una muestra de código.s
+* Explique la estructura de URL (solo ruta, sin URL raíz) incluyendo el tipo de solicitud (Method).
 
-For each endpoint explain:
-* URL Params If URL Params exist, specify them in accordance with name mentioned in URL section:
+Para cada endpoint, explique:
+* Parámetros de URL: Si existen parámetros de URL, especifíquelos de acuerdo con el nombre mencionado en la sección de URL:
 
     ```
     Required: id=[integer]
     Optional: photo_id=[alphanumeric]
     ```
 
-* If the request type is POST, provide working examples. URL Params rules apply here too. Separate the section into Optional and Required.
-
-* Success Response, What should be the status code and is there any return data? This is useful when people need to know what their callbacks should expect:
+* Si el tipo de solicitud es POST, proporcione ejemplos de trabajo. Las reglas de los parámetros de URL también se aplican aquí. Separe la sección en Opcional y Requerido.
+* En caso de que la respuesta sea correcta, ¿Cuál debería ser el código de estado? ¿Hay algún dato de devolución? Esto es útil cuando las personas necesitan saber qué deben esperar sus devoluciones de llamada:
 
     ```
     Code: 200
     Content: { id : 12 }
     ```
 
-* Error Response, Most endpoints have many ways to fail. From unauthorized access to wrongful parameters etc. All of those should be listed here. It might seem repetitive, but it helps prevent assumptions from being made. For example
+* Respuesta de error?, la mayoría de los puntos finales tienen muchas formas de fallar. Desde el acceso no autorizado a parámetros erróneos, etc. Todos estos deben estar listados aquí. Puede parecer repetitivo, pero ayuda a evitar que se hagan suposiciones. Por ejemplo
     ```json
     {
         "code": 403,
@@ -891,7 +888,6 @@ For each endpoint explain:
         "description" : "Invalid username or password"
     }   
     ```
-
 
 * Use herramientas de diseño de API. Hay muchas herramientas de código abierto para una buena documentación, como [API Blueprint](https://apiblueprint.org/) y [Swagger](https://swagger.io/).
 
