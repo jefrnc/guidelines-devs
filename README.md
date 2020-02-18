@@ -13,7 +13,6 @@ Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas
 - [Documentacion](#documentation)
 - [Ambientes](#environments)
     - [Entornos de desarrollo consistentes](#consistent-dev-environments)
-- [Dependencias](#dependencies)
 - [Testing](#testing)
 - [Estilo de código](#code-style)
     - [Algunas pautas de estilo de código](#code-style-check)
@@ -553,140 +552,57 @@ Tener una buena guía para crear commits y cumplirla hace que trabajar con Git y
     > Puede brindarle un entorno consistente en todo el flujo de trabajo. Sin mucha necesidad de jugar con dependencias o configuraciones. [Lee mas...](https://hackernoon.com/how-to-dockerize-a-node-js-application-4fbab45a0c19)
 
 
-<a name="dependencies"></a>
-## 4. Dependencias
-
-* Keep track of your currently available packages: e.g., `npm ls --depth=0`. [read more...](https://docs.npmjs.com/cli/ls)
-* See if any of your packages have become unused or irrelevant: `depcheck`. [read more...](https://www.npmjs.com/package/depcheck)
-    
-  _Por que?:_
-    > Puede incluir una biblioteca no utilizada en su código y aumentar el tamaño del paquete de producción. Encuentra dependencias no utilizadas y deshazte de ellas.
-
-* Before using a dependency, check its download statistics to see if it is heavily used by the community: `npm-stat`. [read more...](https://npm-stat.com/)
-    
-  _Por que?:_
-    > More usage mostly means more contributors, which usually means better maintenance, and all of these result in quickly discovered bugs and quickly developed fixes.
-
-* Before using a dependency, check to see if it has a good, mature version release frequency with a large number of maintainers: e.g., `npm view async`. [read more...](https://docs.npmjs.com/cli/view)
-
-  _Por que?:_
-    > Having loads of contributors won't be as effective if maintainers don't merge fixes and patches quickly enough.
-
-* If a less known dependency is needed, discuss it with the team before using it.
-* Always make sure your app works with the latest version of its dependencies without breaking: `npm outdated`. [read more...](https://docs.npmjs.com/cli/outdated)
-
-  _Por que?:_
-    > Dependency updates sometimes contain breaking changes. Always check their release notes when updates show up. Update your dependencies one by one, that makes troubleshooting easier if anything goes wrong. Use a cool tool such as [npm-check-updates](https://github.com/tjunnone/npm-check-updates).
-
-* Check to see if the package has known security vulnerabilities with, e.g., [Snyk](https://snyk.io/test?utm_source=risingstack_blog).
-
 
 <a name="testing"></a>
 ## 5. Testing
 
-* Have a `test` mode environment if needed.
+* Tenga un entorno de `test` si es necesario, en realidad deberia ser mandatorio a mi opinion.
 
   _Por que?:_
-    > While sometimes end to end testing in `production` mode might seem enough, there are some exceptions: One example is you may not want to enable analytical information on a 'production' mode and pollute someone's dashboard with test data. The other example is that your API may have rate limits in `production` and blocks your test calls after a certain amount of requests. 
+    > Si bien a veces las pruebas de punta a punta (regresion) en `producción` pueden parecer suficientes, hay algunas excepciones: un ejemplo es que es posible que no desee habilitar el test en este ambiente para no producir problemas de consistencia de datos o modificar informacion vital para el negocio. El otro ejemplo es que su API puede tener límites de velocidad en `producción` y bloquea sus llamadas de prueba después de una cierta cantidad de solicitude en caso de tratarse de una API, por lo general los ambientes mas cercanos a produccion cuenta con restricciones de seguridad informatica.
 
-* Place your test files next to the tested modules using `*.test.js` or `*.spec.js` naming convention, like `moduleName.spec.js`.
 
-  _Por que?:_
-    > You don't want to dig through a folder structure to find a unit test. [read more...](https://hackernoon.com/structure-your-javascript-code-for-testability-9bc93d9c72dc)
-    
-
-* Put your additional test files into a separate test folder to avoid confusion.
+* Coloque sus archivos de prueba adicionales en una carpeta de prueba separada para evitar confusiones.
 
   _Por que?:_
-    > Some test files don't particularly relate to any specific implementation file. You have to put it in a folder that is most likely to be found by other developers: `__test__` folder. This name: `__test__`  is also standard now and gets picked up by most JavaScript testing frameworks.
+    > Algunos archivos de prueba no se relacionan particularmente con ningún archivo de implementación específico. Debe colocarlo en una carpeta que otros desarrolladores puedan encontrar: la carpeta `__test__`. Este nombre: `__test__` también es estándar ahora y la mayoría de los framework de testing por ejemplo de JavaScript lo utilizan.
 
-* Write testable code, avoid side effects, extract side effects, write pure functions
 
-  _Por que?:_
-    > You want to test a business logic as separate units. You have to "minimize the impact of randomness and nondeterministic processes on the reliability of your code". [read more...](https://medium.com/javascript-scene/tdd-the-rite-way-53c9b46f45e3)
-    
-    > A pure function is a function that always returns the same output for the same input. Conversely, an impure function is one that may have side effects or depends on conditions from the outside to produce a value. That makes it less predictable. [read more...](https://hackernoon.com/structure-your-javascript-code-for-testability-9bc93d9c72dc)
-
-* Use a static type checker 
+* Ejecute pruebas localmente antes de realizar cualquier Pull Request para `develop`.
 
   _Por que?:_
-    > Sometimes you may need a Static type checker. It brings a certain level of reliability to your code. [read more...](https://medium.freecodecamp.org/why-use-static-types-in-javascript-part-1-8382da1e0adb)
+    > No querrás ser el responsable que provocó el fracaso de la compilación de la rama superior. Ejecute sus pruebas después de su `rebase` y antes de llevar su rama de feature-branch a un repositorio remoto
 
-
-* Run tests locally before making any pull requests to `develop`.
-
-  _Por que?:_
-    > You don't want to be the one who caused production-ready branch build to fail. Run your tests after your `rebase` and before pushing your feature-branch to a remote repository.
-
-* Document your tests including instructions in the relevant section of your `README.md` file.
+* Documente sus pruebas, incluidas las instrucciones en la sección correspondiente de su archivo `README.md`.
 
   _Por que?:_
-    > It's a handy note you leave behind for other developers or DevOps experts or QA or anyone who gets lucky enough to work on your code.
-
+    > Es una nota útil que deja para otros desarrolladores/DevOp/QA o cualquier persona que tenga la suerte de trabajar en su código.
  
 <a name="code-style"></a>
-## 7. Code style
+## 7. Estilo de código
 
 <a name="code-style-check"></a>
-### 7.1 Some code style guidelines
+### 7.1 Algunas pautas de estilo de código
 
-* Use stage-2 and higher JavaScript (modern) syntax for new projects. For old project stay consistent with existing syntax unless you intend to modernise the project.
-
-  _Por que?:_
-    > This is all up to you. We use transpilers to use advantages of new syntax. stage-2 is more likely to eventually become part of the spec with only minor revisions. 
-
-* Include code style check in your build process.
+* Dependiendo del tamaño de la tarea, use `// TODO:` comentarios o abra un ticket.
 
   _Por que?:_
-    > Breaking your build is one way of enforcing code style to your code. It prevents you from taking it less seriously. Do it for both client and server-side code. [read more...](https://www.robinwieruch.de/react-eslint-webpack-babel/)
+    > Entonces puede recordarse a sí mismo y a los demás acerca de una tarea pequeña (como refactorizar una función o actualizar un comentario). Para tareas más grandes, use `// TODO (# 3456)`, que se aplica mediante una regla de lint y el número es un ticket abierto.
 
-* Use [ESLint - Pluggable JavaScript linter](http://eslint.org/) to enforce code style.
-
-  _Por que?:_
-    > We simply prefer `eslint`, you don't have to. It has more rules supported, the ability to configure the rules, and ability to add custom rules.
-
-* We use [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) for JavaScript, [Read more](https://www.gitbook.com/book/duk/airbnb-javascript-guidelines/details). Use the javascript style guide required by the project or your team.
-
-* We use [Flow type style check rules for ESLint](https://github.com/gajus/eslint-plugin-flowtype) when using [FlowType](https://flow.org/).
-
-  _Por que?:_
-    > Flow introduces few syntaxes that also need to follow certain code style and be checked.
-
-* Use `.eslintignore` to exclude files or folders from code style checks.
-
-  _Por que?:_
-    > You don't have to pollute your code with `eslint-disable` comments whenever you need to exclude a couple of files from style checking.
-
-* Remove any of your `eslint` disable comments before making a Pull Request.
-
-  _Por que?:_
-    > It's normal to disable style check while working on a code block to focus more on the logic. Just remember to remove those `eslint-disable` comments and follow the rules.
-
-* Depending on the size of the task use  `//TODO:` comments or open a ticket.
-
-  _Por que?:_
-    > So then you can remind yourself and others about a small task (like refactoring a function or updating a comment). For larger tasks use `//TODO(#3456)` which is enforced by a lint rule and the number is an open ticket.
-
-
-* Always comment and keep them relevant as code changes. Remove commented blocks of code.
+* Siempre comente y manténgalos relevantes a medida que cambia el código. Eliminar los bloques de código comentados.
     
   _Por que?:_
-    > Your code should be as readable as possible, you should get rid of anything distracting. If you refactored a function, don't just comment out the old one, remove it.
+    > Su código debe ser lo más legible posible, debe deshacerse de cualquier cosa que lo distraiga. Si refactorizó una función, no solo comente la anterior, elimínela.
 
-* Avoid irrelevant or funny comments, logs or naming.
-
-  _Por que?:_
-    > While your build process may(should) get rid of them, sometimes your source code may get handed over to another company/client and they may not share the same banter.
-
-* Make your names search-able with meaningful distinctions avoid shortened names. For functions use long, descriptive names. A function name should be a verb or a verb phrase, and it needs to communicate its intention.
+* Evite comentarios, registros o nombres irrelevantes o divertidos.
 
   _Por que?:_
-    > It makes it more natural to read the source code.
+    > Si bien su proceso de compilación puede (debería) deshacerse de ellos, a veces su código fuente puede entregarse a otra empresa / cliente y es posible que no compartan las mismas bromas.
 
-* Organize your functions in a file according to the step-down rule. Higher level functions should be on top and lower levels below.
-
+* Haga que sus nombres sean buscables con distinciones significativas para evitar nombres abreviados. Para las funciones, use nombres largos y descriptivos. El nombre de una función debe ser un verbo o una frase verbal, y debe comunicar su intención.
   _Por que?:_
-    > It makes it more natural to read the source code.
+    > Hace que sea más natural leer el código fuente.
+
 
 <a name="enforcing-code-style-standards"></a>
 ### 7.2 Hacer cumplir los estándares de estilo de código
