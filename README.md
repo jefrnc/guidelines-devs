@@ -1,5 +1,7 @@
 
-# Project Guidelines &middot; [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+# Lineamientos basicos &middot; [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/josephefranco)
+
 
 Aquí hay una lista de pautas que hemos encontrado, escrito y recopilado que (creemos) funciona muy bien con la mayoría de los proyectos.
 Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas pautas, [sientete libre de compartirlo con nosotros](http://makeapullrequest.com).
@@ -903,3 +905,22 @@ Sources:
 [Wishtack](https://blog.wishtack.com)
 
 Icons by [icons8](https://icons8.com/)
+
+
+## Contribuyendo 🖇️
+
+Por favor lee el [CONTRIBUTING.md]([CONTRIBUTING.md) para detalles de nuestro código de conducta, y el proceso para enviarnos pull requests.
+
+ 
+## Licencia 📄
+
+Mira el archivo [LICENSE.md](LICENSE.md) para detalles
+
+## Expresiones de Gratitud 🎁
+
+* Comenta a otros sobre este proyecto 📢
+* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
+* Da las gracias públicamente 🤓.
+
+---
+⌨️ con ❤️ por [jose-franco](https://github.com/jose-franco) 😊
