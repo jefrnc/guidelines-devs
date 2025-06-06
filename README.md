@@ -109,13 +109,13 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     [master (root-commit) af85f5b] first commit
     1 file changed, 1 insertion(+)
     create mode 100644 README.md
-    $ git remote add origin https://github.com/jose-franco/gitflow-empty.git
+    $ git remote add origin https://github.com/jefrnc/gitflow-empty.git
     $ git push -u origin master
     Enumerating objects: 3, done.
     Counting objects: 100% (3/3), done.
     Writing objects: 100% (3/3), 230 bytes | 230.00 KiB/s, done.
     Total 3 (delta 0), reused 0 (delta 0)
-    To https://github.com/jose-franco/gitflow-empty.git
+    To https://github.com/jefrnc/gitflow-empty.git
     * [new branch]      master -> master
     Branch 'master' set up to track remote branch 'master' from 'origin'.
     ```
@@ -126,9 +126,9 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     Total 0 (delta 0), reused 0 (delta 0)
     remote:
     remote: Create a pull request for 'develop' on GitHub by visiting:
-    remote:      https://github.com/jose-franco/gitflow-empty/pull/new/develop
+    remote:      https://github.com/jefrnc/gitflow-empty/pull/new/develop
     remote:
-    To https://github.com/jose-franco/gitflow-empty.git
+    To https://github.com/jefrnc/gitflow-empty.git
     * [new branch]      develop -> develop
     Branch 'develop' set up to track remote branch 'develop' from 'origin'.
 
@@ -165,7 +165,7 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
 * Como inicializar git flow en un repositorio existente.
 
     ```sh
-    git clone https://github.com/jose-franco/gitflow-empty.git
+    git clone https://github.com/jefrnc/gitflow-empty.git
     git branch -a -v  #verificamos si existen o no los branch de git flow
     git flow init
     ```
@@ -215,7 +215,7 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     Counting objects: 100% (2/2), done.
     Writing objects: 100% (2/2), 169 bytes | 169.00 KiB/s, done.
     Total 2 (delta 0), reused 0 (delta 0)
-    To https://github.com/jose-franco/gitflow-empty.git
+    To https://github.com/jefrnc/gitflow-empty.git
     * [new branch]      feature/new-license-control -> feature/new-license-control
     Branch 'feature/new-license-control' set up to track remote branch 'feature/new-license-control' from 'origin'.
     Already on 'feature/new-license-control'
@@ -233,7 +233,7 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
 * Si otro desarrollador necesita bajar el feature nuestro, debemos seguir los siguientes pasos.
 
     ```sh
-    $ git clone https://github.com/jose-franco/gitflow-empty.git
+    $ git clone https://github.com/jefrnc/gitflow-empty.git
     Cloning into 'gitflow-empty'...
     remote: Enumerating objects: 6, done.
     remote: Counting objects: 100% (6/6), done.
@@ -290,7 +290,7 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     licencia.txt | 1 +
     1 file changed, 1 insertion(+)
     create mode 100644 licencia.txt
-    To https://github.com/jose-franco/gitflow-empty.git
+    To https://github.com/jefrnc/gitflow-empty.git
     - [deleted]         feature/new-license-control
     Deleted branch feature/new-license-control (was 52044ef).
 
@@ -321,7 +321,7 @@ Debido a la mayoría de las razones anteriores, utilizamos [Feature-branch-workf
     Compressing objects: 100% (2/2), done.
     Writing objects: 100% (3/3), 291 bytes | 291.00 KiB/s, done.
     Total 3 (delta 0), reused 0 (delta 0)
-    To https://github.com/jose-franco/gitflow-empty.git
+    To https://github.com/jefrnc/gitflow-empty.git
       af85f5b..52044ef  develop -> develop
     ```
     Verificamos y hacemos un push.
@@ -923,4 +923,4 @@ Mira el archivo [LICENSE.md](LICENSE.md) para detalles
 * Da las gracias públicamente 🤓.
 
 ---
-⌨️ con ❤️ por [jose-franco](https://github.com/jose-franco) 😊
+⌨️ con ❤️ por [jose-franco](https://github.com/jefrnc) 😊
