@@ -1,29 +1,42 @@
 
-# Lineamientos basicos &middot; [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/josephefranco)
+# 📚 Lineamientos de Desarrollo de Software &middot; [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/josephefranco)
 
+> Una colección completa de mejores prácticas y lineamientos para el desarrollo de software moderno.
 
-Aquí hay una lista de pautas que hemos encontrado, escrito y recopilado que (creemos) funciona muy bien con la mayoría de los proyectos.
-Si desea compartir una mejor práctica, o cree que se debe eliminar una de estas pautas, [sientete libre de compartirlo con nosotros](http://makeapullrequest.com).
+## 📖 Acerca de este repositorio
 
-<hr>
+Este repositorio contiene una lista cuidadosamente seleccionada de pautas, mejores prácticas y estándares que hemos recopilado y probado en proyectos reales. Estas guías están diseñadas para ayudar a equipos de desarrollo a mantener consistencia, calidad y eficiencia en sus proyectos.
 
-- [Git](#git)
-    - [Algunas reglas de Git](#some-git-rules)
-    - [Git workflow](#git-workflow)
-    - [Escribir buenos mensajes en el commit](#writing-good-commit-messages)
-- [Documentacion](#documentation)
-- [Ambientes](#environments)
-    - [Entornos de desarrollo consistentes](#consistent-dev-environments)
-- [Testing](#testing)
-- [Estilo de código](#code-style)
-    - [Algunas pautas de estilo de código](#code-style-check)
-    - [Hacer cumplir los estándares de estilo de código](#enforcing-code-style-standards)
-- [Logging](#logging)
-- [API](#api)
-    - [Diseño del API](#api-design)
-    - [Seguridad de la API](#api-security)
-    - [Documentación de la API](#api-documentation)
+**¿Quieres contribuir?** Si deseas compartir una mejor práctica o sugerir mejoras, [siéntete libre de crear un Pull Request](http://makeapullrequest.com).
+
+## 📋 Tabla de Contenidos
+
+### 🔧 Control de Versiones
+- [1. Git](#git)
+    - [1.1 Reglas fundamentales de Git](#some-git-rules)
+    - [1.2 Git workflow](#git-workflow)
+    - [1.3 Escribir buenos mensajes de commit](#writing-good-commit-messages)
+
+### 📝 Desarrollo
+- [2. Documentación](#documentation)
+- [3. Ambientes](#environments)
+    - [3.1 Entornos de desarrollo consistentes](#consistent-dev-environments)
+- [4. Testing](#testing)
+- [5. Estilo de código](#code-style)
+    - [5.1 Pautas de estilo de código](#code-style-check)
+    - [5.2 Hacer cumplir los estándares](#enforcing-code-style-standards)
+
+### 🔍 Monitoreo y APIs
+- [6. Logging](#logging)
+- [7. API](#api)
+    - [7.1 Diseño de API](#api-design)
+    - [7.2 Seguridad de API](#api-security)
+    - [7.3 Documentación de API](#api-documentation)
+
+### 🚀 DevOps (Nuevo)
+- [8. CI/CD](#cicd)
+- [9. Containerización](#containerization)
+- [10. Monitoreo y Observabilidad](#monitoring)
 
 <a name="git"></a>
 ## 1. Git
@@ -62,16 +75,29 @@ Hay un conjunto de reglas a tener en cuenta:
   _Por que?:_
     > Está a punto de agregar su código a una rama estable. Si el codigo de la rama 'feature' falla, existe una alta probabilidad de que la compilación de su ramificación de destino también falle. Además, debe aplicar la verificación de estilo de código antes de realizar un Pull Request. Ayuda a la legibilidad y reduce la posibilidad de que las correcciones de formato se mezclen con los cambios reales.
 
-* Use [este](./.gitignore) `.gitignore` archivo.
+* Use un archivo `.gitignore` apropiado para su proyecto.
     
-  _Por que?:_
-    > Ya tiene una lista de archivos del sistema que no deben enviarse con su código a un repositorio remoto. Además, puede excluir la configuración de carpetas y archivos para los editores más utilizados, así como las carpetas de dependencia más comunes. Existe paginas que permite auto-generar este archivo, un ejemplo es [gitignore.io](https://www.gitignore.io)
+  _¿Por qué?:_
+    > Evita que archivos del sistema, configuraciones locales y dependencias se suban accidentalmente al repositorio. Además, puede excluir la configuración de carpetas y archivos para los editores más utilizados, así como las carpetas de dependencia más comunes.
+    
+  _¿Cómo generarlo?:_
+    > Utiliza herramientas como [gitignore.io](https://www.toptal.com/developers/gitignore) para generar un archivo `.gitignore` personalizado según las tecnologías de tu proyecto
 
-* Proteja su `develop` y `master` branch.
+* Proteja sus ramas `develop` y `master`.
   
-  _Por que?:_
-    > It protects your production-ready branches from receiving unexpected and irreversible changes. read more... [Github](https://help.github.com/articles/about-protected-branches/), [Bitbucket](https://confluence.atlassian.com/bitbucketserver/using-branch-permissions-776639807.html) and [GitLab](https://docs.gitlab.com/ee/user/project/protected_branches.html)
-    > En caso de utilizar ramas de `release`, proteja las msimas de recibir cambios inesperados e irreversibles. Leer más ... [Github] (https://help.github.com/articles/about-protected-branches/), [Bitbucket] (https://confluence.atlassian.com/bitbucketserver/using-branch-permissions -776639807.html) y [GitLab] (https://docs.gitlab.com/ee/user/project/protected_branches.html)
+  _¿Por qué?:_
+    > Protege tus ramas de producción de recibir cambios inesperados e irreversibles. Las ramas protegidas garantizan que el código crítico pase por un proceso de revisión adecuado.
+    
+  _¿Cómo configurarlo?:_
+    > **GitHub**: Settings → Branches → Add rule → Require pull request reviews
+    > **GitLab**: Settings → Repository → Protected branches
+    > **Bitbucket**: Repository settings → Branch permissions
+    
+  _Configuración recomendada:_
+    > - Requerir revisión de PR antes de fusionar
+    > - Descartar aprobaciones obsoletas cuando se pushean nuevos commits
+    > - Requerir que las ramas estén actualizadas antes de fusionar
+    > - Incluir administradores en las restricciones
 
 <a name="git-workflow"></a>
 ### 1.2 GitFlow
@@ -893,16 +919,353 @@ Para cada endpoint, explique:
 
 * Use herramientas de diseño de API. Hay muchas herramientas de código abierto para una buena documentación, como [API Blueprint](https://apiblueprint.org/) y [Swagger](https://swagger.io/).
 
+<a name="cicd"></a>
+## 8. CI/CD (Integración y Despliegue Continuo)
+
+### 8.1 Principios básicos de CI/CD
+
+* Configure pipelines de CI/CD desde el inicio del proyecto.
+
+  _¿Por qué?:_
+    > Detecta errores tempranamente, automatiza tareas repetitivas y asegura que el código en producción siempre esté en un estado desplegable.
+
+* Ejecute todas las pruebas en cada commit a las ramas principales.
+
+  _¿Cómo?:_
+    > Use herramientas como GitHub Actions, GitLab CI, Jenkins o CircleCI:
+    ```yaml
+    # Ejemplo de GitHub Actions
+    name: CI
+    on: [push, pull_request]
+    jobs:
+      test:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - run: npm install
+          - run: npm test
+          - run: npm run lint
+    ```
+
+* Automatice el versionado semántico.
+
+  _¿Por qué?:_
+    > Mantiene un historial claro de cambios y facilita el rollback si es necesario.
+
+### 8.2 Mejores prácticas de deployment
+
+* Use estrategias de deployment como Blue-Green o Canary.
+* Implemente feature flags para activar/desactivar funcionalidades.
+* Mantenga los secretos fuera del código usando variables de entorno o servicios de gestión de secretos.
+
+<a name="containerization"></a>
+## 9. Containerización
+
+### 9.1 Docker
+
+* Siempre use imágenes base oficiales y específicas.
+
+  ```dockerfile
+  # ❌ Evitar
+  FROM node:latest
+  
+  # ✅ Preferir
+  FROM node:18.17-alpine3.18
+  ```
+
+* Optimice las capas del Dockerfile.
+
+  _¿Por qué?:_
+    > Reduce el tamaño de la imagen y mejora los tiempos de construcción aprovechando la caché de Docker.
+
+  ```dockerfile
+  # Copiar dependencias primero para aprovechar caché
+  COPY package*.json ./
+  RUN npm ci --only=production
+  
+  # Luego copiar el código fuente
+  COPY . .
+  ```
+
+* Use multi-stage builds para reducir el tamaño final.
+
+  ```dockerfile
+  # Etapa de construcción
+  FROM node:18-alpine AS builder
+  WORKDIR /app
+  COPY package*.json ./
+  RUN npm ci
+  COPY . .
+  RUN npm run build
+  
+  # Etapa de producción
+  FROM node:18-alpine
+  WORKDIR /app
+  COPY --from=builder /app/dist ./dist
+  COPY --from=builder /app/node_modules ./node_modules
+  CMD ["node", "dist/index.js"]
+  ```
+
+### 9.2 Docker Compose
+
+* Use Docker Compose para desarrollo local con múltiples servicios.
+* Defina redes personalizadas para mejor aislamiento.
+* Use archivos `.env` para configuración (no olvide agregarlos a `.gitignore`).
+
+<a name="monitoring"></a>
+## 10. Monitoreo y Observabilidad
+
+### 10.1 Los tres pilares de la observabilidad
+
+* **Logs**: Use structured logging con niveles apropiados.
+  
+  ```javascript
+  // Ejemplo con Winston
+  logger.info('Usuario autenticado', {
+    userId: user.id,
+    timestamp: new Date().toISOString(),
+    action: 'login'
+  });
+  ```
+
+* **Métricas**: Implemente métricas de negocio y técnicas.
+  - Latencia de respuesta
+  - Tasa de errores
+  - Uso de recursos
+  - Métricas de negocio específicas
+
+* **Trazas**: Use distributed tracing para sistemas complejos.
+  - OpenTelemetry
+  - Jaeger
+  - Zipkin
+
+### 10.2 Alertas
+
+* Configure alertas basadas en SLOs (Service Level Objectives).
+* Use la regla de las 4 golden signals:
+  - **Latency**: Tiempo de respuesta
+  - **Traffic**: Volumen de solicitudes
+  - **Errors**: Tasa de errores
+  - **Saturation**: Uso de recursos
+
+### 10.3 Dashboards
+
+* Cree dashboards para diferentes audiencias:
+  - **Técnico**: Métricas de infraestructura y aplicación
+  - **Negocio**: KPIs y métricas de usuario
+  - **Ejecutivo**: Vista de alto nivel del estado del sistema
+
+<a name="security"></a>
+## 11. Seguridad - Mejores Prácticas Actualizadas
+
+### 11.1 Seguridad en el Código
+
+* **Nunca hardcodees credenciales o secretos**
+  
+  ```javascript
+  // ❌ NUNCA hagas esto
+  const apiKey = "sk-1234567890abcdef";
+  
+  // ✅ Usa variables de entorno
+  const apiKey = process.env.API_KEY;
+  ```
+
+* **Valida y sanitiza TODAS las entradas de usuario**
+  
+  ```javascript
+  // Ejemplo con Express y express-validator
+  app.post('/user', [
+    body('email').isEmail().normalizeEmail(),
+    body('age').isInt({ min: 0, max: 120 }),
+    body('name').trim().escape()
+  ], (req, res) => {
+    // Procesar solicitud
+  });
+  ```
+
+* **Usa prepared statements para consultas SQL**
+  
+  ```javascript
+  // ❌ Vulnerable a SQL injection
+  const query = `SELECT * FROM users WHERE id = ${userId}`;
+  
+  // ✅ Usa parámetros preparados
+  const query = 'SELECT * FROM users WHERE id = ?';
+  db.query(query, [userId]);
+  ```
+
+### 11.2 Dependencias y Vulnerabilidades
+
+* **Audita regularmente las dependencias**
+  
+  ```bash
+  # Node.js
+  npm audit
+  npm audit fix
+  
+  # Python
+  pip-audit
+  safety check
+  
+  # Java
+  mvn dependency-check:check
+  ```
+
+* **Mantén las dependencias actualizadas**
+  - Usa herramientas como Dependabot, Renovate o Snyk
+  - Revisa los changelogs antes de actualizar versiones mayores
+  - Ten un proceso para parchear vulnerabilidades críticas rápidamente
+
+### 11.3 Autenticación y Autorización
+
+* **Implementa autenticación robusta**
+  - Usa bibliotecas probadas (Passport.js, Spring Security, etc.)
+  - Implementa MFA cuando sea posible
+  - Usa tokens con expiración (JWT con refresh tokens)
+
+* **Principio de menor privilegio**
+  ```javascript
+  // Ejemplo de middleware de autorización
+  function authorize(roles = []) {
+    return (req, res, next) => {
+      if (!req.user || !roles.includes(req.user.role)) {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+      next();
+    };
+  }
+  
+  // Uso
+  app.get('/admin', authorize(['admin']), adminController);
+  ```
+
+### 11.4 Comunicación Segura
+
+* **Usa HTTPS en todos los ambientes**
+  ```javascript
+  // Forzar HTTPS en Express
+  app.use((req, res, next) => {
+    if (!req.secure && process.env.NODE_ENV === 'production') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    }
+    next();
+  });
+  ```
+
+* **Implementa headers de seguridad**
+  ```javascript
+  // Usando helmet.js
+  const helmet = require('helmet');
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"]
+      }
+    },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    }
+  }));
+  ```
+
+### 11.5 Manejo de Datos Sensibles
+
+* **Encripta datos sensibles en reposo**
+  ```javascript
+  const crypto = require('crypto');
+  
+  function encrypt(text) {
+    const algorithm = 'aes-256-gcm';
+    const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, key, iv);
+    
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    
+    const authTag = cipher.getAuthTag();
+    
+    return {
+      encrypted,
+      authTag: authTag.toString('hex'),
+      iv: iv.toString('hex')
+    };
+  }
+  ```
+
+* **Implementa rate limiting**
+  ```javascript
+  const rateLimit = require('express-rate-limit');
+  
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 100, // límite de solicitudes
+    message: 'Demasiadas solicitudes, intente más tarde'
+  });
+  
+  // Límite más estricto para login
+  const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5,
+    skipSuccessfulRequests: true
+  });
+  
+  app.use('/api/', limiter);
+  app.use('/api/login', loginLimiter);
+  ```
+
+### 11.6 Logging y Monitoreo de Seguridad
+
+* **Registra eventos de seguridad**
+  ```javascript
+  // Eventos a registrar
+  logger.security({
+    event: 'failed_login',
+    userId: attemptedUserId,
+    ip: req.ip,
+    userAgent: req.get('user-agent'),
+    timestamp: new Date().toISOString()
+  });
+  ```
+
+* **NO registres información sensible**
+  - Nunca loguees contraseñas, tokens o datos de tarjetas
+  - Sanitiza los logs antes de enviarlos a servicios externos
+  - Usa niveles de log apropiados (error, warn, info, debug)
+
+### 11.7 Checklist de Seguridad para Deployment
+
+- [ ] Todas las variables de entorno están configuradas
+- [ ] HTTPS está habilitado y forzado
+- [ ] Headers de seguridad están configurados
+- [ ] Rate limiting está implementado
+- [ ] Logs no contienen información sensible
+- [ ] Dependencias están actualizadas y sin vulnerabilidades conocidas
+- [ ] Backups automáticos están configurados
+- [ ] Monitoreo de seguridad está activo
+- [ ] Plan de respuesta a incidentes está documentado
+
 ---
-Sources:
-[elsewhencode/project-guidelines](https://github.com/elsewhencode/project-guidelines),
-[RisingStack Engineering](https://blog.risingstack.com/),
-[Mozilla Developer Network](https://developer.mozilla.org/),
-[Heroku Dev Center](https://devcenter.heroku.com),
-[Airbnb/javascript](https://github.com/airbnb/javascript),
-[Atlassian Git tutorials](https://www.atlassian.com/git/tutorials),
-[Apigee](https://apigee.com/about/blog),
-[Wishtack](https://blog.wishtack.com)
+## 📚 Recursos adicionales
+
+### Fuentes originales:
+- [elsewhencode/project-guidelines](https://github.com/elsewhencode/project-guidelines)
+- [RisingStack Engineering](https://blog.risingstack.com/)
+- [Mozilla Developer Network](https://developer.mozilla.org/)
+- [Heroku Dev Center](https://devcenter.heroku.com)
+- [Airbnb/javascript](https://github.com/airbnb/javascript)
+- [Atlassian Git tutorials](https://www.atlassian.com/git/tutorials)
+- [Apigee](https://apigee.com/about/blog)
+- [Wishtack](https://blog.wishtack.com)
+
+### Recursos adicionales recomendados:
+- [12 Factor App](https://12factor.net/es/)
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [Google SRE Books](https://sre.google/books/)
+- [Martin Fowler's Blog](https://martinfowler.com/)
 
 Icons by [icons8](https://icons8.com/)
 

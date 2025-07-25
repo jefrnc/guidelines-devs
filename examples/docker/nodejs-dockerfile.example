@@ -1,0 +1,42 @@
+# Ejemplo de Dockerfile optimizado para Node.js
+
+# Etapa 1: Dependencias de desarrollo
+FROM node:18.17-alpine3.18 AS dependencies
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+# Etapa 2: Construcción
+FROM node:18.17-alpine3.18 AS builder
+WORKDIR /app
+COPY package*.json ./
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+RUN npm prune --production
+
+# Etapa 3: Producción
+FROM node:18.17-alpine3.18 AS production
+WORKDIR /app
+
+# Crear usuario no-root
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodejs -u 1001
+
+# Copiar archivos necesarios
+COPY --chown=nodejs:nodejs --from=builder /app/node_modules ./node_modules
+COPY --chown=nodejs:nodejs --from=builder /app/dist ./dist
+COPY --chown=nodejs:nodejs --from=builder /app/package*.json ./
+
+# Cambiar a usuario no-root
+USER nodejs
+
+# Exponer puerto
+EXPOSE 3000
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD node healthcheck.js || exit 1
+
+# Comando de inicio
+CMD ["node", "dist/index.js"]
